@@ -47,14 +47,30 @@ function lSystemsClick(){
 			} else if(replacements[rules[i][0]]){
 				errors += "Error: More than one rule defined for "+rules[i][0]+".\n";
 			} else {
+				var brackets = 0;
 				for(var e in rules[i][1]){
 					if(variables.indexOf(rules[i][1][e]) == -1 && constants.indexOf(rules[i][1][e]) == -1){
 						errors += "Can't parse rule: \""+oldrule+"\": variable or constant "+rules[i][1][e]+" was not defined.\n";
 						break;
+					} else {
+						if(rules[i][1][e] == "["){
+							brackets++;
+						}
+						if(rules[i][1][e] == "]"){
+							brackets--;
+							if(brackets < 0){
+								errors += "Mismatched brackets in rule \""+oldrule+"\": missing [\n";
+								break;
+							}
+						}
 					}
 				}
 				if(!errors){
-					replacements[rules[i][0]] = rules[i][1];
+					if(brackets != 0){
+						errors += "Mismatched brackets in rule \""+oldrule+"\"\n";
+					} else {
+						replacements[rules[i][0]] = rules[i][1];
+					}
 				}
 			}
 		}
@@ -104,6 +120,8 @@ function lSystemsClick(){
 	
 		var turtle = new Turtle(canvas, context, [startX, startY], startAngle);
 
+		var stack = [];
+
 		for(var i in ins){
 			switch(ins[i]){
 				case "+":
@@ -111,6 +129,12 @@ function lSystemsClick(){
 				break;
 				case "-":
 					turtle.turn(-angle);
+				break;
+				case "[":
+					turtle.push();
+				break;
+				case "]":
+					turtle.pop();
 				break;
 				default:
 					if(replacements[ins[i]]){
