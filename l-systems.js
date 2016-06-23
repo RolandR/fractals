@@ -138,7 +138,9 @@ function lSystemsClick(){
 				break;
 				default:
 					if(replacements[ins[i]]){
-						turtle.move(distance);
+						if(ins[i].match(/^[A-Z]$/)){
+							turtle.move(distance);
+						}
 					}
 				break;
 			}
