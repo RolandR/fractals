@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title>
-			Koch Curve
+			Hilbert Curve
 		</title>
 		<style>
 			*{
@@ -10,10 +10,13 @@
 				margin: 0px;
 				padding: 0px;
 			}
-			body, html{
+			body, html, #canvasContainer{
 				width: 100%;
 				height: 100%;
 				overflow: hidden;
+			}
+			#canvasContainer{
+				text-align: center;
 			}
 			#controls{
 				border: 1px #555555 solid;
@@ -27,12 +30,14 @@
 	</head>
 	<body>
 		<div id="controls">
-			<label for="iterations">Iterations:</label><input id="iterations" type="number" value="5" /><button onclick="kochClick()">Run!</button>
+			<label for="iterations">Iterations:</label><input id="iterations" type="number" value="5" /><button onclick="hilbertClick()">Run!</button>
 		</div>
-		<canvas id="renderCanvas">
-			Needs more canvas
-		</canvas>
+		<div id="canvasContainer">
+			<canvas id="renderCanvas">
+				Needs more canvas
+			</canvas>
+		</div>
 	</body>
 	<script type="text/javascript" src="./Turtle.js"></script>
-	<script type="text/javascript" src="./koch.js"></script>
+	<script type="text/javascript" src="./hilbert.js"></script>
 </html>

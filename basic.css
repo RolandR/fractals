@@ -1,0 +1,67 @@
+*{
+	box-sizing: border-box;
+}
+
+body{
+	font-family: sans-serif;
+}
+
+button,
+select{	
+	background: none;
+	background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(180, 180, 180, 0.3));
+	border: 1px #AAAAAA outset;
+	color: #000000;
+	cursor: pointer;
+	padding: 3px;
+	height: 23px;
+}
+
+button:hover,
+select:hover,
+.fileLabel:hover{
+	background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.6), rgba(180, 180, 180, 0.5));
+	border: 1px rgba(0, 0, 0, 0.6) outset;
+}
+
+button:active,
+select:active,
+.fileLabel:active{
+	background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.6), rgba(180, 180, 180, 0.8));
+	border: 1px rgba(0, 0, 0, 0.8) outset;
+	outline: none;
+}
+
+button:focus,
+select:focus,
+.fileLabel:focus{
+	outline: none;
+}
+
+
+input[type="text"],
+input[type="number"]{
+	border: 1px #DDDDDD solid;
+	outline: none;
+	height: 23px;
+	margin: 0px 5px;
+	padding: 2px;
+	font-family: "Courier New", monospace;
+	width: 50px;
+	position: relative;
+	top: -1px;
+}
+
+input[type="text"]:hover, input[type="text"]:active, input[type="text"]:focus,
+input[type="number"]:hover, input[type="number"]:active, input[type="number"]:focus{
+	border-color: #AAAAAA;
+}
+
+
+
+
+
+
+
+
+
