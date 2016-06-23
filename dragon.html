@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+	<head>
+		<title>
+			Dragon Curve
+		</title>
+		<style>
+			*{
+				border: none;
+				margin: 0px;
+				padding: 0px;
+			}
+			body, html, #canvasContainer{
+				width: 100%;
+				height: 100%;
+				overflow: hidden;
+			}
+			#canvasContainer{
+				text-align: center;
+				margin-top: 20px;
+			}
+			#controls{
+				border: 1px #555555 solid;
+				padding: 10px;
+				margin: -1px 0px 0px -1px;
+				display: inline-block;
+				position: absolute;
+			}
+			/*canvas{border: 1px #00FF00 solid;}*/
+		</style>
+		<link href="./basic.css" rel="stylesheet" type="text/css" media="all">
+	</head>
+	<body>
+		<div id="controls">
+			<label for="iterations">Iterations:</label><input id="iterations" type="number" value="16" /><button onclick="dragonClick()">Run!</button>
+		</div>
+		<div id="canvasContainer">
+			<canvas id="renderCanvas">
+				Needs more canvas
+			</canvas>
+		</div>
+	</body>
+	<script type="text/javascript" src="./Turtle.js"></script>
+	<script type="text/javascript" src="./dragon.js"></script>
+</html>
