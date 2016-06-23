@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+	<head>
+		<title>
+			Lindenmayer Systems
+		</title>
+		<style>
+			*{
+				border: none;
+				margin: 0px;
+				padding: 0px;
+			}
+			body, html{
+				width: 100%;
+				height: 100%;
+				overflow: hidden;
+			}
+			#controls{
+				border: 1px #555555 solid;
+				padding: 10px;
+				margin: -1px 0px 0px -1px;
+				display: inline-block;
+				position: absolute;
+			}
+			td{
+				vertical-align: top;
+			}
+		</style>
+		<link href="./basic.css" rel="stylesheet" type="text/css" media="all">
+	</head>
+	<body>
+		<div id="controls">
+			<table>
+				<tr>
+					<td>
+						<label for="variables">Variables:</label>
+					</td>
+					<td>
+						<input id="variables" type="text" value="AB" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="constants">Constants:</label>
+					</td>
+					<td>
+						<input id="constants" type="text" value="+-" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="start">Start:</label>
+					</td>
+					<td>
+						<input id="start" type="text" value="A" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="rules">Rules:</label>
+					</td>
+					<td>
+						<textarea id="rules" rows="5">A &gt; +B-A-B+
+B &gt; -A+B+A-</textarea>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="angle">Angle:</label>
+					</td>
+					<td>
+						<input id="angle" type="number" value="60" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="distance">Distance:</label>
+					</td>
+					<td>
+						<input id="distance" type="number" value="10" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label>Start pos:</label>
+					</td>
+					<td>
+						<input id="startX" type="number" value="0" /><input id="startY" type="number" value="0" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="startAngle">Start angle:</label>
+					</td>
+					<td>
+						<input id="startAngle" type="number" value="-90" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="iterations">Depth:</label>
+					</td>
+					<td>
+						<input id="iterations" type="number" value="5" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+					</td>
+					<td>
+						<button onclick="lSystemsClick()" style="float: right;">Run!</button>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<canvas id="renderCanvas">
+			Needs more canvas
+		</canvas>
+	</body>
+	<script type="text/javascript" src="./Turtle.js"></script>
+	<script type="text/javascript" src="./l-systems.js"></script>
+</html>

@@ -40,7 +40,8 @@ select:focus,
 
 
 input[type="text"],
-input[type="number"]{
+input[type="number"],
+textarea{
 	border: 1px #DDDDDD solid;
 	outline: none;
 	height: 23px;
@@ -52,8 +53,14 @@ input[type="number"]{
 	top: -1px;
 }
 
+textarea{
+	width: 100px;
+	height: auto;
+}
+
 input[type="text"]:hover, input[type="text"]:active, input[type="text"]:focus,
-input[type="number"]:hover, input[type="number"]:active, input[type="number"]:focus{
+input[type="number"]:hover, input[type="number"]:active, input[type="number"]:focus,
+textarea:hover, textarea:active, textarea:focus{
 	border-color: #AAAAAA;
 }
 
