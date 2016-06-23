@@ -2,10 +2,8 @@
 var canvas = document.getElementById("renderCanvas");
 var context = canvas.getContext("2d");
 
-canvas.width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-canvas.height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-
 kochClick();
+window.onresize = kochClick;
 
 function koch(turtle, distance, level){
 	if(level == 0){
@@ -38,6 +36,9 @@ function doKoch(levels){
 }
 
 function kochClick(){
+	canvas.width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+	canvas.height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
 	var iterations = document.getElementById("iterations").value;
 	iterations = Math.round(iterations);
 	

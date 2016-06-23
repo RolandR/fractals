@@ -2,13 +2,8 @@
 var canvas = document.getElementById("renderCanvas");
 var context = canvas.getContext("2d");
 
-var width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-var height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-
-canvas.width = Math.min(width, height);
-canvas.height = Math.min(width, height);
-
 hilbertClick();
+window.onresize = hilbertClick;
 
 function hilbert(turtle, distance, level, sign){
 	
@@ -54,6 +49,12 @@ function doHilbert(level){
 }
 
 function hilbertClick(){
+	var width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+	var height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+	canvas.width = Math.min(width, height);
+	canvas.height = Math.min(width, height);
+
 	var iterations = document.getElementById("iterations").value;
 	iterations = Math.round(iterations);
 	
