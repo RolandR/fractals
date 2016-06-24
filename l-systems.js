@@ -1,8 +1,32 @@
+/*
+
+cool rules:
+
+A > B-C-B-C-
+B > B+B-
+C > B
+
+90°
+
+---
+
+A > B-C-B-C-
+B > B-C+B
+C > C-B+C
+
+90°
+
+
+*/
+
+
+
 
 var canvas = document.getElementById("renderCanvas");
 var context = canvas.getContext("2d");
 
 canvas.width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+canvas.height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 canvas.height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
 document.getElementById("startX").value = canvas.width/2;
@@ -86,6 +110,14 @@ function lSystemsClick(){
 		}
 	}
 
+	var constantsMap = {};
+
+	if(!errors){
+		for(var i in constants){
+			constantsMap[constants[i]] = true;
+		}
+	}
+
 	if(!errors){
 		if(!replacements[start]){
 			errors += "No rule defined for start variable "+start+"!\n";
@@ -138,6 +170,10 @@ function lSystemsClick(){
 				break;
 				default:
 					if(replacements[ins[i]]){
+						if(ins[i].match(/^[A-Z]$/)){
+							turtle.move(distance);
+						}
+					} else if(constantsMap[ins[i]]){
 						if(ins[i].match(/^[A-Z]$/)){
 							turtle.move(distance);
 						}
