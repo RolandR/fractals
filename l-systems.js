@@ -113,119 +113,6 @@ function LSystem(){
 		}
 	}
 
-
-	function importFromJSON(inputString){
-		var newSystem = null;
-		
-		try {
-			newSystem = JSON.parse(inputString);
-		} catch(e){
-			alert("There was an error in your import string.\nThe following error message was reported:\n\n\""+e.message+'"');
-		}
-
-		if(newSystem){
-			if(newSystem.length == 8){
-				closePopup();
-				
-				[
-					 system.start
-					,system.rules
-					,system.angle
-					,system.distance
-					,system.iterations
-					,system.startX
-					,system.startY
-					,system.startAngle
-				] = newSystem;
-				writeSettings();
-				
-				var errors = checkSyntax(system);
-
-				if(errors){
-					alert("The imported system has errors:\n\n"+errors);
-				} else {
-					instructions = doReplacements(system.start, system.iterations);
-					draw();
-				}
-			} else {
-				alert("Couldn't import system:\nSome values might be missing, or the input string has other errors.");
-			}
-		}
-	}
-	
-	document.getElementById("findPos").onclick = function(){
-		document.getElementById("findPos").disabled = true;
-		canvas.style.cursor = "crosshair";
-		canvas.onclick = function(e){
-
-			document.getElementById("startX").value = e.offsetX + 0.5;
-			document.getElementById("startY").value = e.offsetY + 0.5;
-
-			document.getElementById("findPos").disabled = false;
-			canvas.style.cursor = "default";
-			canvas.onclick = function(){};
-
-			init();
-		}
-	}
-
-	document.getElementById("export").onclick = function(){
-		readSettings();
-		
-		var errors = checkSyntax(system);
-
-		if(errors){
-			alert(errors);
-		} else {
-			popup = document.getElementById("exportPopup");
-			var toEncode = [
-				 system.start
-				,system.rules
-				,system.angle
-				,system.distance
-				,system.iterations
-				,system.startX
-				,system.startY
-				,system.startAngle
-			];
-			var jsonString = JSON.stringify(toEncode);
-			document.getElementById("exportArea").innerHTML = jsonString;
-
-			var base64String = btoa(jsonString);
-			document.getElementById("exportURL").value = window.location.origin + window.location.pathname + "?" + base64String;
-			
-			document.getElementById("overlay").style.display = "block";
-			popup.style.display = "flex";
-
-			document.getElementById("exportArea").focus();
-			document.getElementById("exportArea").select();
-			
-		}
-	}
-
-	document.getElementById("import").onclick = function(){
-		popup = document.getElementById("importPopup");
-		document.getElementById("overlay").style.display = "block";
-		popup.style.display = "flex";
-	}
-	
-	document.getElementById("importButton").onclick = function(){
-		var inputString = document.getElementById("importArea").value;
-		importFromJSON(inputString);
-	}
-
-	document.getElementById("overlay").onclick = function(e){
-		if(e.target == this){
-			closePopup();
-		}
-	}
-
-	document.onkeydown = function(e){
-		if(e.code == "Escape"){
-			closePopup();
-		}
-	}
-
 	function init(){
 
 		canvas.width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
@@ -248,6 +135,16 @@ function LSystem(){
 	function writeSettings(){
 		let {iterations, start, rules, angle, distance, startX, startY, startAngle, replacements} = system;
 
+		iterations = ~~iterations;
+		if(iterations < 0){
+			iterations = 0;
+		}
+		if(iterations == 0){
+			document.getElementById("lessIterations").disabled = true;
+		} else {
+			document.getElementById("lessIterations").disabled = false;
+		}
+		
 		document.getElementById("iterations").value = iterations;
 		document.getElementById("start").value = start;
 		document.getElementById("rules").value = rules;
@@ -260,8 +157,15 @@ function LSystem(){
 
 	function readSettings(){
 
-		system.iterations = document.getElementById("iterations").value;
-		system.iterations = Math.round(system.iterations);
+		system.iterations = ~~document.getElementById("iterations").value;
+		if(system.iterations < 0){
+			system.iterations = 0;
+		}
+		if(system.iterations == 0){
+			document.getElementById("lessIterations").disabled = true;
+		} else {
+			document.getElementById("lessIterations").disabled = false;
+		}
 		document.getElementById("iterations").value = system.iterations;
 
 		system.start = document.getElementById("start").value;
@@ -389,13 +293,169 @@ function LSystem(){
 		
 	}
 
-	function getSystem(){
-		return system;
+	
+
+	function importFromJSON(inputString){
+		var newSystem = null;
+		
+		try {
+			newSystem = JSON.parse(inputString);
+		} catch(e){
+			alert("There was an error in your import string.\nThe following error message was reported:\n\n\""+e.message+'"');
+		}
+
+		if(newSystem){
+			if(newSystem.length == 9){
+				closePopup();
+				
+				[
+					 // ([0] is version)
+					,system.start
+					,system.rules
+					,system.angle
+					,system.distance
+					,system.iterations
+					,system.startX
+					,system.startY
+					,system.startAngle
+				] = newSystem;
+				writeSettings();
+				
+				var errors = checkSyntax(system);
+
+				if(errors){
+					alert("The imported system has errors:\n\n"+errors);
+				} else {
+					instructions = doReplacements(system.start, system.iterations);
+					draw();
+				}
+			} else {
+				alert("Couldn't import system:\nSome values might be missing, or the input string has other errors.");
+			}
+		}
+	}
+	
+	document.getElementById("findPos").onclick = function(){
+		document.getElementById("findPos").disabled = true;
+		canvas.style.cursor = "crosshair";
+		canvas.onclick = function(e){
+
+			document.getElementById("startX").value = e.offsetX + 0.5;
+			document.getElementById("startY").value = e.offsetY + 0.5;
+
+			document.getElementById("findPos").disabled = false;
+			canvas.style.cursor = "default";
+			canvas.onclick = function(){};
+
+			init();
+		}
+	}
+
+	document.getElementById("rotateLeft").onclick = function(){
+		let angle = document.getElementById("startAngle").value * 1;
+		angle = (angle - 90) % 360;
+		document.getElementById("startAngle").value = angle;
+		init();
+	}
+
+	document.getElementById("rotateRight").onclick = function(){
+		let angle = document.getElementById("startAngle").value * 1;
+		angle = (angle + 90) % 360;
+		document.getElementById("startAngle").value = angle;
+		init();
+	}
+
+	document.getElementById("lessIterations").onclick = function(){
+		let iterations = ~~document.getElementById("iterations").value;
+		
+		iterations--;
+		
+		if(iterations < 0){
+			document.getElementById("iterations").value = 0;
+		} else {
+			if(iterations == 0){
+				document.getElementById("lessIterations").disabled = true;
+			}
+			document.getElementById("iterations").value = iterations;
+			init();
+		}
+	}
+
+	document.getElementById("moreIterations").onclick = function(){
+		document.getElementById("lessIterations").disabled = false;
+		
+		let iterations = ~~document.getElementById("iterations").value;
+		iterations++;
+		document.getElementById("iterations").value = iterations;
+		init();
+	}
+
+	document.getElementById("export").onclick = function(){
+		readSettings();
+		
+		var errors = checkSyntax(system);
+
+		if(errors){
+			alert(errors);
+		} else {
+			popup = document.getElementById("exportPopup");
+			var toEncode = [
+				 1 // version
+				,system.start
+				,system.rules
+				,system.angle
+				,system.distance
+				,system.iterations
+				,system.startX
+				,system.startY
+				,system.startAngle
+			];
+			var jsonString = JSON.stringify(toEncode);
+			document.getElementById("exportArea").innerHTML = jsonString;
+
+			var base64String = btoa(jsonString);
+			document.getElementById("exportURL").value = window.location.origin + window.location.pathname + "?" + base64String;
+			
+			document.getElementById("overlay").style.display = "flex";
+			popup.style.display = "flex";
+
+			document.getElementById("exportArea").focus();
+			document.getElementById("exportArea").select();
+			
+		}
+	}
+
+	document.getElementById("import").onclick = function(){
+		popup = document.getElementById("importPopup");
+		document.getElementById("overlay").style.display = "flex";
+		popup.style.display = "flex";
+	}
+	
+	document.getElementById("importButton").onclick = function(){
+		var inputString = document.getElementById("importArea").value;
+		importFromJSON(inputString);
+	}
+
+	document.getElementById("instructionsButton").onclick = function(){
+		popup = document.getElementById("instructionsPopup");
+		document.getElementById("overlay").style.display = "flex";
+		popup.style.display = "flex";
+	}
+
+	document.getElementById("overlay").onclick = function(e){
+		if(e.target == this){
+			closePopup();
+		}
+	}
+
+	document.onkeydown = function(e){
+		if(e.code == "Escape"){
+			closePopup();
+		}
 	}
 
 	return {
 		 init: init
-		,getSystem: getSystem
 	};
 }
 

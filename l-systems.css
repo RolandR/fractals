@@ -12,14 +12,91 @@ body, html{
 	overflow: hidden;
 }
 
+h1{
+	font-weight: normal;
+	font-size: 24px;
+	margin-bottom: 7px;
+}
+
 #controlPanel{
 	border: 1px #555555 solid;
+	border-width: 0px 1px 1px 0px;
 	padding: 10px;
-	margin: -1px 0px 0px -1px;
-	display: inline-block;
+	display: flex;
+	flex-direction: column;
 	position: absolute;
+	width: 290px;
+	max-height: 100%;
 
 	background-color: rgba(255, 255, 255, 0.5);
+}
+
+#controlPanel #content{
+	flex: auto;
+	overflow-y: auto;
+	margin: 0px -10px 3px -10px;
+	padding: 0px 10px;
+}
+
+#controlsTable{
+	width: 100%;
+	border-spacing: 0px;
+}
+
+#controlsTable td{
+	padding: 3px 0px;
+}
+
+#controlsTable td:first-child{
+	max-width: 100%;
+}
+
+#controlsTable td:last-child{
+	width: 160px;
+}
+
+#controlsTable td > div{
+	width: 100%;
+	display: flex;
+}
+
+#controlsTable td > div input,
+#controlsTable td > div textarea
+{
+	flex: auto;
+}
+
+#controlsTable td > div :last-child{
+	margin-right: 0px;
+}
+
+#controlsTable td *{
+	vertical-align: top;
+}
+
+.squareButton{
+	font-size: 28px;
+    height: 23px;
+    width: 23px;
+    line-height: 0px;
+    text-align: center;
+    padding: 0px;
+    margin: 0px 5px 0px 0px;
+}
+
+#rotateRight, #rotateLeft{
+	font-size: 22px;
+	line-height: 1.2em;
+	padding-right: 1px;
+}
+
+#lessIterations, #moreIterations{
+	padding-bottom: 1px;
+}
+
+#instructionsButtonContainer{
+	text-align: center;
+	margin-top: 7px;
 }
 
 #overlay{
@@ -32,22 +109,19 @@ body, html{
 	background-color: rgba(0, 0, 0, 0.3);
 	z-index: 100000;
 	justify-content: center;
+	align-items: center;
 }
 
 .popup{
 	display: none;
+	position: relative;
 	flex-direction: column;
 	width: 400px;
 	max-width: 100%;
-	height: 400px;
+	min-height: 50%;
 	max-height: 100%;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translateY(-50%) translateX(-50%);
 	border: 1px #000000 solid;
 	background-color: #FFFFFF;
-
 	padding: 10px;
 }
 
@@ -68,15 +142,22 @@ body, html{
 	font-weight: normal;
 }
 
+.popup h3{
+	font-size: 18px;
+	font-weight: normal;
+	margin-top: 15px;
+}
+
 .popup p{
 	margin: 10px 0px;
 }
 
-.popup .popupTextarea{
+.popup .popupContent{
 	display: block;
 	width: 100%;
 	margin-bottom: 10px;
 	flex: auto;
+	overflow-y: auto;
 }
 
 .popupButton{
@@ -88,6 +169,38 @@ body, html{
 	flex: none;
 }
 
+#instructionsPopup{
+	width: 600px;
+}
+
+#instructionsPopup p{
+	margin-left: 10px;
+}
+
+#instructionsPopup table{
+	margin-left: 15px;
+}
+
+#instructionsPopup td{
+	padding: 2px 4px;
+}
+
+#instructionsTable{
+	border-collapse: collapse;
+}
+
+#instructionsTable th{
+	font-weight: normal;
+	padding: 4px 2px;
+}
+
+#instructionsTable td{
+	min-width: 80px;
+	padding: 4px;
+	border: 1px #DDDDDD solid;
+	border-width: 1px 0px;
+}
+
 #exportURLContainer{
 	display: flex;
 	align-items: center;
@@ -97,32 +210,4 @@ body, html{
 #exportURLContainer :last-child{
 	flex: auto;
 	margin: 0px 0px 0px 5px;
-}
-
-td{
-	padding: 2px 4px;
-}
-
-td *{
-	vertical-align: top;
-}
-
-#rules{
-	width: 150px;
-}
-
-#findPos{
-	font-size: 28px;
-    height: 23px;
-    width: 23px;
-    line-height: 0px;
-    text-align: center;
-    padding: 0px;
-}
-
-h1{
-	font-weight: normal;
-	font-size: 24px;
-	margin-left: 5px;
-	margin-bottom: 7px;
 }

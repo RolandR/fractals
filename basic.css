@@ -78,6 +78,21 @@ textarea:hover, textarea:active, textarea:focus{
 	border-color: #AAAAAA;
 }
 
+hr{
+	border-top: 1px #AAAAAA solid;
+	margin: 5px 0px;
+}
+
+code{
+	border: 1px #DDDDDD dashed;
+    background: #FFFFFA;
+    padding: 1px 3px;
+    font-size: 1.1em;
+}
+
+th{
+	text-align: left;
+}
 
 
 

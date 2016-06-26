@@ -9,84 +9,170 @@
 	</head>
 	<body>
 		<div id="overlay">
+			
 			<div class="popup" id="exportPopup">
 				<h2>Export</h2><button class="closeButton" onclick="closePopup()">&#10005;</button>
 				<p>
 					Copy the text below to share your L-system with others or to save it for later.
 				</p>
-				<textarea class="popupTextarea" id="exportArea"></textarea>
+				<textarea class="popupContent" id="exportArea"></textarea>
 				<div id="exportURLContainer">
 					<label for="exportURL">Or share this link:</label>
 					<input type="text" id="exportURL" onclick="this.select()" readonly />
 				</div>
 				<button class="popupButton" onclick="closePopup()">Done</button>
 			</div>
+			
 			<div class="popup" id="importPopup">
 				<h2>Import</h2><button class="closeButton" onclick="closePopup()">&#10005;</button>
 				<p>
 					Below, you can paste the string you got from exporting an L-system.
 				</p>
-				<textarea class="popupTextarea" id="importArea"></textarea>
+				<textarea class="popupContent" id="importArea"></textarea>
 				<div>
 					<button class="popupButton" onclick="closePopup()">Cancel</button>
 					<button class="popupButton" id="importButton">Import</button>
 				</div>
 			</div>
+			
+			<div class="popup" id="instructionsPopup">
+				<h2>L-Systems</h2><button class="closeButton" onclick="closePopup()">&#10005;</button>
+				<div class="popupContent">
+					<p>
+						An L-System is a parallel rewriting system and a type of formal grammar.
+					</p>
+					<p>
+						An L-System consists of an <em>alphabet</em>, a set of <em>rewrite rules</em> and an initial <em>axiom</em>, which is the string on which the first iteration of replacements is applied.
+					</p>
+					<p>
+						Example:
+					</p>
+					<table>
+						<tr>
+							<td>Start: </td>
+							<td><code>A</code></td>
+						</tr>
+						<tr>
+							<td>Rules: </td>
+							<td><code>A > BAB</code></td>
+						</tr>
+					</table>
+					<p>
+						After 0 iterations, this will result in the string <code>A</code>.<br />
+						After one iteration, it will be <code>BAB</code>, then <code>BBABB</code>, then <code>BBBABBB</code>, and so on.<br />
+						As you see, symbols for which there is no rule defined will remain constant.
+					</p>
+					<h3>Drawing graphics with L-Systems</h3>
+					<p>
+						Based on the system you define, a graphic will be drawn on the screen.<br />
+						This follows simple rules:
+					</p>
+					<table id="instructionsTable">
+						<tr>
+							<th>Symbol</th>
+							<th>Result</th>
+						</tr>
+						<tr>
+							<td><code>A-Z</code></td>
+							<td>Draw straight line of length defined by <em>Distance</em></td>
+						</tr>
+						<tr>
+							<td><code>a-a</code></td>
+							<td>Do nothing: These symbols are only used in the replacement phase</td>
+						</tr>
+						<tr>
+							<td><code>- or +</code></td>
+							<td>Turn by positive or negative <em>Angle</em></td>
+						</tr>
+						<tr>
+							<td><code>[ or ]</code></td>
+							<td>
+								<code>[</code> will save the current angle and position for later,<br />
+								when <code>]</code> will restore them.
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div>
+					<button class="popupButton" onclick="closePopup()">Got it</button>
+				</div>
+			</div>
+			
 		</div>
+		
 		<div id="controlPanel">
 			<h1>Lindenmayer Systems</h1>
-			<table>
-				<tr>
-					<td><label for="variables">Variables:</label></td>
-					<td><input id="variables" type="text" value="AB" /><br /></td>
-				</tr>
-				<tr>
-					<td colspan="2">(Upper-case will draw)</td>
-				</tr>
-				<tr>
-					<td><label for="constants">Constants:</label></td>
-					<td><input id="constants" type="text" value="+-[]" /></td>
-				</tr>
-				<tr>
-					<td><label for="start">Start:</label></td>
-					<td><input id="start" type="text" value="A" /></td>
-				</tr>
-				<tr>
-					<td><label for="rules">Rules:</label></td>
-					<td><textarea id="rules" rows="5">A &gt; +B-A-B+
-B &gt; -A+B+A-</textarea></td>
-				</tr>
-				<tr>
-					<td><label for="angle">Angle:</label></td>
-					<td><input id="angle" type="number" value="60" /></td>
-				</tr>
-				<tr>
-					<td><label for="distance">Distance:</label></td>
-					<td><input id="distance" type="number" value="10" /></td>
-				</tr>
-				<tr>
-					<td><label>Start pos:</label></td>
-					<td><input id="startX" type="number" value="0" /><input id="startY" type="number" value="0" /><button id="findPos">&#8982;</button></td>
-				</tr>
-				<tr>
-					<td><label for="startAngle">Start angle:</label></td>
-					<td><input id="startAngle" type="number" value="-90" /></td>
-				</tr>
-				<tr>
-					<td><label for="iterations">Depth:</label></td>
-					<td><input id="iterations" type="number" value="5" /></td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						<button id="export">Export</button>
-						<button id="import">Import</button>
-						<button onclick="lSystem.init()" style="float: right;">Run!</button></td>
-				</tr>
-			</table>
+			<div id="content">
+				<p>
+					Below, you can define the rules of a <a href="https://en.wikipedia.org/wiki/L-system">Lindenmayer System</a>, or L-System.
+				</p>
+				<div id="instructionsButtonContainer">
+					<button id="instructionsButton">Instructions</button>
+				</div>
+				<table id="controlsTable">
+					<tr>
+						<td colspan="2"><hr /></td>
+					</tr>
+					<tr>
+						<td><label for="start">Start:</label></td>
+						<td><div><input id="start" type="text" value="A" /></div></td>
+					</tr>
+					<tr>
+						<td><label for="rules">Rules:</label></td>
+						<td><div><textarea id="rules" rows="5">A &gt; +B-A-B+
+B &gt; -A+B+A-</textarea></div></td>
+					</tr>
+					<tr>
+						<td><label for="angle">Angle:</label></td>
+						<td><div><input id="angle" type="number" value="60" /></div></td>
+					</tr>
+					<tr>
+						<td><label for="distance">Distance:</label></td>
+						<td><div><input id="distance" type="number" value="10" /></div></td>
+					</tr>
+					<tr>
+						<td colspan="2"><hr /></td>
+					</tr>
+					<tr>
+						<td><label>Start pos:</label></td>
+						<td><div>
+							<input id="startX" type="number" value="0" /><!--
+						---><input id="startY" type="number" value="0" /><!--
+						---><button class="squareButton" id="findPos">&#8982;</button>
+						</div></td>
+					</tr>
+					<tr>
+						<td><label for="startAngle">Start angle:</label></td>
+						<td><div>
+							<input id="startAngle" type="number" value="-90" /><!--
+						---><button class="squareButton" id="rotateLeft">&#8630;</button><!--
+						---><button class="squareButton" id="rotateRight">&#8631;</button>
+						</div></td>
+					</tr>
+					<tr>
+						<td><label for="iterations">Recursions:</label></td>
+						<td><div>
+							<input id="iterations" type="number" value="5" /><!--
+						---><button class="squareButton" id="lessIterations">-</button><!--
+						---><button class="squareButton" id="moreIterations">+</button>
+						</div></td>
+					</tr>
+					<tr>
+						<td colspan="2"><hr /></td>
+					</tr>
+				</table>
+			</div>
+			<div>
+				<button id="export">Export</button>
+				<button id="import">Import</button>
+				<button onclick="lSystem.init()" style="float: right;">Run!</button>
+			</div>
 		</div>
+		
 		<canvas id="renderCanvas">
 			Needs more canvas
 		</canvas>
+		
 	</body>
 	<script type="text/javascript" src="./Turtle.js"></script>
 	<script type="text/javascript" src="./l-systems.js"></script>
