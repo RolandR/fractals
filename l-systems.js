@@ -88,35 +88,32 @@ function LSystem(){
 
 	canvas.width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 	canvas.height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-	canvas.height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
 	document.getElementById("startX").value = canvas.width/2;
 	document.getElementById("startY").value = Math.round(5*canvas.height/6);
 
 	var system = {};
 	var instructions = "";
-	
-	init();
 
 	var base64Parameter = window.location.search;
 	if(base64Parameter.substring(0, 1) == "?"){
 		var json;
 		try{
 			json = atob(base64Parameter.substring(1));
-			console.log(json);
 		} catch(e){
-			console.log(e);
+			console.log("Skipped import from base64 argument due to error: \n"+e);
 		}
 		
 		if(json){
 			importFromJSON(json);
+		} else {
+			init();
 		}
+	} else {
+		init();
 	}
 
 	function init(){
-
-		canvas.width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-		canvas.height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
 		readSettings();
 		
@@ -319,6 +316,10 @@ function LSystem(){
 					,system.startY
 					,system.startAngle
 				] = newSystem;
+
+				system.startX = Math.round(system.startX * canvas.width)+0.5;
+				system.startY = Math.round(system.startY * canvas.height)+0.5;
+				
 				writeSettings();
 				
 				var errors = checkSyntax(system);
@@ -400,14 +401,14 @@ function LSystem(){
 		} else {
 			popup = document.getElementById("exportPopup");
 			var toEncode = [
-				 1 // version
+				 2 // version
 				,system.start
 				,system.rules
 				,system.angle
 				,system.distance
 				,system.iterations
-				,system.startX
-				,system.startY
+				,Math.round(1000*system.startX / canvas.width)/1000
+				,Math.round(1000*system.startY / canvas.height)/1000
 				,system.startAngle
 			];
 			var jsonString = JSON.stringify(toEncode);
@@ -451,6 +452,17 @@ function LSystem(){
 	document.onkeydown = function(e){
 		if(e.code == "Escape"){
 			closePopup();
+		}
+	}
+
+	window.onresize = function(){
+		canvas.width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+		canvas.height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+		if(instructions){
+			draw();
+		} else {
+			console.log("foo");
 		}
 	}
 
