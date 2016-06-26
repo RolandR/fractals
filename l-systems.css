@@ -23,15 +23,13 @@ h1{
 }
 
 #controlPanel{
+	position: absolute;
 	border: 1px #555555 solid;
 	padding: 10px;
 	margin: 10px;
 	display: flex;
 	flex-direction: column;
-	position: absolute;
 	width: 290px;
-	max-height: calc(100% - 20px);
-
 	background-color: rgba(255, 255, 255, 0.8);
 	box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3)
 }
@@ -112,11 +110,9 @@ h1{
 	outline: 10px solid;
 	outline-color: rgba(255, 0, 0, 0.0);
 	background-color: rgba(255, 0, 0, 0.0);
-	border: 0px #FF0000 solid;
-	border-radius: 10px;
 	transition: outline-color, background-color;
 	transition-timing-function: ease-out;
-	transition-duration: 450ms;
+	transition-duration: 600ms;
 }
 
 #timeLimitLabel.alert{
@@ -128,6 +124,31 @@ h1{
 #instructionsButtonContainer{
 	text-align: center;
 	margin-top: 7px;
+}
+
+#infoPanel{
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	max-width: calc(100% - 310px);
+	background-color: rgba(0, 0, 0, 0.01);
+	border: 1px rgba(0, 0, 0, 0.03) solid;
+	color: rgba(0, 0, 0, 0.4);
+	padding: 10px;
+	font-family: monospace;
+	line-height: 1.7em;
+	margin: 10px;
+
+	transition: top;
+	transition-timing-function: ease-in-out;
+	transition-duration: 300ms;
+	
+}
+
+#infoPanel:hover{
+	background-color: rgba(0, 0, 0, 0.1);
+	border: 1px rgba(0, 0, 0, 0.2) solid;
+	color: rgba(0, 0, 0, 0.9)
 }
 
 #overlay{

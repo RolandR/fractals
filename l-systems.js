@@ -235,6 +235,8 @@ function LSystem(){
 		var {iterations, start, rules, angle, distance, startX, startY, startAngle, replacements, timeLimit} = system;
 
 		//document.body.className += "wait ";
+
+		document.getElementById("replacementInfo").innerHTML = "";
 		
 		var startTime = Date.now();
 
@@ -269,7 +271,8 @@ function LSystem(){
 					console.log(document.getElementById("timeLimitLabel").className);
 					document.getElementById("timeLimitLabel").className = document.getElementById("timeLimitLabel").className.replace("alert ", '');
 				}, 100);
-				console.log("Replacing reached time limit at "+(Date.now() - startTime)+"ms.");
+				console.log("Replacing reached time limit after "+(Date.now() - startTime)+"ms.");
+				document.getElementById("replacementInfo").innerHTML += "<p>Replacing reached time limit after "+(Date.now() - startTime)+"ms</p>";
 				if(ins.length < out.length){
 					ins = out;
 				}
@@ -283,6 +286,8 @@ function LSystem(){
 
 		console.log("Replaced to "+a+" of "+iterations+" iterations in "+(Date.now() - startTime)+"ms, where "+i+" of "+len+" ("+Math.round(10000*i/len)/100+"%) replacements were done.");
 
+		document.getElementById("replacementInfo").innerHTML += "<p>"+a+" of "+iterations+" replacement iterations, "+(Date.now() - startTime)+"ms</p>";
+
 		//document.body.className = document.body.className.replace("wait ", '');
 		
 		return ins;
@@ -292,6 +297,8 @@ function LSystem(){
 	function draw(){
 
 		//document.body.className += "wait ";
+
+		document.getElementById("drawingInfo").innerHTML = "";
 
 		var startTime = Date.now();
 		
@@ -304,6 +311,8 @@ function LSystem(){
 
 		var stack = [];
 
+		var moveCount = 0;
+
 		for(var i = 0; i < ins.length; i++){
 			
 			if(i%500000 == 0){
@@ -313,7 +322,8 @@ function LSystem(){
 						console.log(document.getElementById("timeLimitLabel").className);
 						document.getElementById("timeLimitLabel").className = document.getElementById("timeLimitLabel").className.replace("alert ", '');
 					}, 100);
-					console.log("Drawing reached time limit at "+(Date.now() - startTime)+"ms.");
+					console.log("Drawing reached time limit after "+(Date.now() - startTime)+"ms.");
+					document.getElementById("drawingInfo").innerHTML += "<p>Drawing reached time limit after "+(Date.now() - startTime)+"ms</p>";
 					break;
 				} 
 			}
@@ -334,6 +344,7 @@ function LSystem(){
 				default:
 					if(ins[i].match(/[A-Z]/)){
 						turtle.move(distance);
+						moveCount++;
 					}
 				break;
 			}
@@ -348,6 +359,8 @@ function LSystem(){
 		context.stroke();
 
 		console.log("Finished drawing "+(i)+" of "+ins.length+" instructions ("+Math.round(10000*i/ins.length)/100+"%) in "+(Date.now() - startTime)+"ms.");
+		document.getElementById("drawingInfo").innerHTML += "<p>"+i+" of "+ins.length+" instructions ("+Math.round(10000*i/ins.length)/100+"%) drawn, "+(Date.now() - startTime)+"ms</p>"
+		document.getElementById("drawingInfo").innerHTML += "<p>Total length drawn is "+Math.round(100*moveCount*distance)/100+"</p>"
 
 		//document.body.className = document.body.className.replace("wait ", '');
 		
@@ -405,6 +418,8 @@ function LSystem(){
 	document.getElementById("findPos").onclick = function(){
 		document.getElementById("findPos").disabled = true;
 		canvas.style.cursor = "crosshair";
+		document.getElementById("infoPanel").style.top = "-"+(document.getElementById("infoPanel").offsetHeight+20)+"px";
+		
 		canvas.onclick = function(e){
 
 			document.getElementById("startX").value = e.layerX + 0.5;
@@ -412,6 +427,7 @@ function LSystem(){
 
 			document.getElementById("findPos").disabled = false;
 			canvas.style.cursor = "default";
+			document.getElementById("infoPanel").style.top = "0px";
 			canvas.onclick = function(){};
 
 			init();
