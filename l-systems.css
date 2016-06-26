@@ -1,0 +1,128 @@
+
+
+*{
+	border: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+body, html{
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+#controlPanel{
+	border: 1px #555555 solid;
+	padding: 10px;
+	margin: -1px 0px 0px -1px;
+	display: inline-block;
+	position: absolute;
+
+	background-color: rgba(255, 255, 255, 0.5);
+}
+
+#overlay{
+	display: none;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	left: 0px;
+	background-color: rgba(0, 0, 0, 0.3);
+	z-index: 100000;
+	justify-content: center;
+}
+
+.popup{
+	display: none;
+	flex-direction: column;
+	width: 400px;
+	max-width: 100%;
+	height: 400px;
+	max-height: 100%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translateY(-50%) translateX(-50%);
+	border: 1px #000000 solid;
+	background-color: #FFFFFF;
+
+	padding: 10px;
+}
+
+.popup .closeButton{
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	font-size: 18px;
+    height: 23px;
+    width: 23px;
+    line-height: 0px;
+    text-align: center;
+    padding: 0px;
+}
+
+.popup h2{
+	font-size: 20px;
+	font-weight: normal;
+}
+
+.popup p{
+	margin: 10px 0px;
+}
+
+.popup .popupTextarea{
+	display: block;
+	width: 100%;
+	margin-bottom: 10px;
+	flex: auto;
+}
+
+.popupButton{
+	width: 100px;
+}
+
+.popup :last-child{
+	align-self: flex-end;
+	flex: none;
+}
+
+#exportURLContainer{
+	display: flex;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+#exportURLContainer :last-child{
+	flex: auto;
+	margin: 0px 0px 0px 5px;
+}
+
+td{
+	padding: 2px 4px;
+}
+
+td *{
+	vertical-align: top;
+}
+
+#rules{
+	width: 150px;
+}
+
+#findPos{
+	font-size: 28px;
+    height: 23px;
+    width: 23px;
+    line-height: 0px;
+    text-align: center;
+    padding: 0px;
+}
+
+h1{
+	font-weight: normal;
+	font-size: 24px;
+	margin-left: 5px;
+	margin-bottom: 7px;
+}

@@ -24,67 +24,276 @@ C > C-B+C
 
 120°
 
+---
+
+B > A+A+A+A+
+A > A+A-A-A+A
+start: B
+90°
+
+---
+
+B > A+A+A+A+A+A+
+A > A+A-A-A+A
+start: B
+60°
+
+--
+
+B > A+A+A+
+A > A+A-A-A+A
+start: B
+120°
+Sierpinski!
+
+--
+
+A > A+A-+A
+120°
+
+--
+
+A > A+AA-
+120°
+
+--
+
+A > +A+A-A
+90*
+
+--
+
+A > A-A+B+B-A
+B > A+A-B-B+B
+90
 
 */
+var popup = null;
+function closePopup(){
+	if(popup){
+		popup.style.display = "none";
+		popup = null;
+	}
+	document.getElementById("overlay").style.display = "none";
+}
+
+var lSystem = new LSystem();
 
 
+function LSystem(){
 
 
-var canvas = document.getElementById("renderCanvas");
-var context = canvas.getContext("2d");
+	var canvas = document.getElementById("renderCanvas");
+	var context = canvas.getContext("2d");
 
-canvas.width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-canvas.height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-canvas.height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-
-document.getElementById("startX").value = canvas.width/2;
-document.getElementById("startY").value = Math.round(5*canvas.height/6);
-
-lSystemsClick();
-//7indow.onresize = kochClick;
-
-function lSystemsClick(){
 	canvas.width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 	canvas.height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+	canvas.height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
-	var iterations = document.getElementById("iterations").value;
-	iterations = Math.round(iterations);
-	document.getElementById("iterations").value = iterations;
+	document.getElementById("startX").value = canvas.width/2;
+	document.getElementById("startY").value = Math.round(5*canvas.height/6);
 
-	var variables = document.getElementById("variables").value;
-	var constants = document.getElementById("constants").value;
-	var start = document.getElementById("start").value;
-	var rules = document.getElementById("rules").value;
-	var angle = document.getElementById("angle").value * 1;
-	var distance = document.getElementById("distance").value * 1;
-	var startX = document.getElementById("startX").value * 1;
-	var startY = document.getElementById("startY").value * 1;
-	var startAngle = document.getElementById("startAngle").value * 1;
-
-	var errors = "";
-
-	var instructions;
-
-	var replacements = {};
-	rules = rules.split("\n");
+	var system = {};
+	var instructions = "";
 	
-	for(var i in rules){
-		if(!rules[i].match(/^\s*$/)){
-			var oldrule = rules[i];
-			rules[i] = rules[i].split(/\s*>\s*/);
-			if(variables.indexOf(rules[i][0]) == -1){
-				errors += "Can't parse rule: \""+oldrule+"\": variable "+rules[i][0]+" was not defined.\n";
-			} else if(rules[i][0].length != 1 || rules[i][1].length <= 0){
-				errors += "Can't parse rule: \""+oldrule+"\": Syntax error.\n";
-			} else if(replacements[rules[i][0]]){
-				errors += "Error: More than one rule defined for "+rules[i][0]+".\n";
+	init();
+
+	var base64Parameter = window.location.search;
+	if(base64Parameter.substring(0, 1) == "?"){
+		var json;
+		try{
+			json = atob(base64Parameter.substring(1));
+			console.log(json);
+		} catch(e){
+			console.log(e);
+		}
+		
+		if(json){
+			importFromJSON(json);
+		}
+	}
+
+
+	function importFromJSON(inputString){
+		var newSystem = null;
+		
+		try {
+			newSystem = JSON.parse(inputString);
+		} catch(e){
+			alert("There was an error in your import string.\nThe following error message was reported:\n\n\""+e.message+'"');
+		}
+
+		if(newSystem){
+			if(newSystem.length == 8){
+				closePopup();
+				
+				[
+					 system.start
+					,system.rules
+					,system.angle
+					,system.distance
+					,system.iterations
+					,system.startX
+					,system.startY
+					,system.startAngle
+				] = newSystem;
+				writeSettings();
+				
+				var errors = checkSyntax(system);
+
+				if(errors){
+					alert("The imported system has errors:\n\n"+errors);
+				} else {
+					instructions = doReplacements(system.start, system.iterations);
+					draw();
+				}
 			} else {
-				var brackets = 0;
-				for(var e in rules[i][1]){
-					if(variables.indexOf(rules[i][1][e]) == -1 && constants.indexOf(rules[i][1][e]) == -1){
-						errors += "Can't parse rule: \""+oldrule+"\": variable or constant "+rules[i][1][e]+" was not defined.\n";
-						break;
-					} else {
+				alert("Couldn't import system:\nSome values might be missing, or the input string has other errors.");
+			}
+		}
+	}
+	
+	document.getElementById("findPos").onclick = function(){
+		document.getElementById("findPos").disabled = true;
+		canvas.style.cursor = "crosshair";
+		canvas.onclick = function(e){
+
+			document.getElementById("startX").value = e.offsetX + 0.5;
+			document.getElementById("startY").value = e.offsetY + 0.5;
+
+			document.getElementById("findPos").disabled = false;
+			canvas.style.cursor = "default";
+			canvas.onclick = function(){};
+
+			init();
+		}
+	}
+
+	document.getElementById("export").onclick = function(){
+		readSettings();
+		
+		var errors = checkSyntax(system);
+
+		if(errors){
+			alert(errors);
+		} else {
+			popup = document.getElementById("exportPopup");
+			var toEncode = [
+				 system.start
+				,system.rules
+				,system.angle
+				,system.distance
+				,system.iterations
+				,system.startX
+				,system.startY
+				,system.startAngle
+			];
+			var jsonString = JSON.stringify(toEncode);
+			document.getElementById("exportArea").innerHTML = jsonString;
+
+			var base64String = btoa(jsonString);
+			document.getElementById("exportURL").value = window.location.origin + window.location.pathname + "?" + base64String;
+			
+			document.getElementById("overlay").style.display = "block";
+			popup.style.display = "flex";
+
+			document.getElementById("exportArea").focus();
+			document.getElementById("exportArea").select();
+			
+		}
+	}
+
+	document.getElementById("import").onclick = function(){
+		popup = document.getElementById("importPopup");
+		document.getElementById("overlay").style.display = "block";
+		popup.style.display = "flex";
+	}
+	
+	document.getElementById("importButton").onclick = function(){
+		var inputString = document.getElementById("importArea").value;
+		importFromJSON(inputString);
+	}
+
+	document.getElementById("overlay").onclick = function(e){
+		if(e.target == this){
+			closePopup();
+		}
+	}
+
+	document.onkeydown = function(e){
+		if(e.code == "Escape"){
+			closePopup();
+		}
+	}
+
+	function init(){
+
+		canvas.width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+		canvas.height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+		readSettings();
+		
+		let {iterations, start, rules, angle, distance, startX, startY, startAngle, replacements} = system;
+
+		var errors = checkSyntax(system);
+
+		if(errors){
+			alert(errors);
+		} else {
+			instructions = doReplacements(start, iterations);
+			draw();
+		}
+	}
+
+	function writeSettings(){
+		let {iterations, start, rules, angle, distance, startX, startY, startAngle, replacements} = system;
+
+		document.getElementById("iterations").value = iterations;
+		document.getElementById("start").value = start;
+		document.getElementById("rules").value = rules;
+		document.getElementById("angle").value = angle;
+		document.getElementById("distance").value = distance;
+		document.getElementById("startX").value = startX;
+		document.getElementById("startY").value = startY;
+		document.getElementById("startAngle").value = startAngle;
+	}
+
+	function readSettings(){
+
+		system.iterations = document.getElementById("iterations").value;
+		system.iterations = Math.round(system.iterations);
+		document.getElementById("iterations").value = system.iterations;
+
+		system.start = document.getElementById("start").value;
+		system.rules = document.getElementById("rules").value;
+		system.angle = document.getElementById("angle").value * 1;
+		system.distance = document.getElementById("distance").value * 1;
+		system.startX = document.getElementById("startX").value * 1;
+		system.startY = document.getElementById("startY").value * 1;
+		system.startAngle = document.getElementById("startAngle").value * 1;
+		system.replacements = {};
+
+	}
+
+	function checkSyntax(system){
+		system.replacements = {};
+		let {iterations, start, rules, angle, distance, startX, startY, startAngle, replacements} = system;
+		
+		var errors = "";
+		
+		rules = rules.split("\n");
+		
+		for(var i in rules){
+			if(!rules[i].match(/^\s*$/)){
+				var oldrule = rules[i];
+				rules[i] = rules[i].split(/\s*>\s*/);
+				if(rules[i][0].length != 1 || rules[i][1].length <= 0){
+					errors += "Can't parse rule: \""+oldrule+"\": Syntax error.\n";
+				} else if(replacements[rules[i][0]]){
+					errors += "Error: More than one rule defined for "+rules[i][0]+".\n";
+				} else {
+					var brackets = 0;
+					for(var e in rules[i][1]){
 						if(rules[i][1][e] == "["){
 							brackets++;
 						}
@@ -96,66 +305,52 @@ function lSystemsClick(){
 							}
 						}
 					}
-				}
-				if(!errors){
-					if(brackets != 0){
-						errors += "Mismatched brackets in rule \""+oldrule+"\"\n";
-					} else {
-						replacements[rules[i][0]] = rules[i][1];
+					if(!errors){
+						if(brackets != 0){
+							errors += "Mismatched brackets in rule \""+oldrule+"\"\n";
+						} else {
+							replacements[rules[i][0]] = rules[i][1];
+						}
 					}
 				}
 			}
 		}
-	}
 
-	variables = variables.split("");
-
-	if(!errors){
-		for(var i in variables){
-			if(!replacements[variables[i]]){
-				errors += "No rule defined for variable "+variables[i]+"!\n";
+		if(!errors){
+			for(var i in start){
+				if(start[i].match(/^[a-zA-Z]$/)){
+					if(!replacements[start[i]]){
+						errors += "No rule defined for variable "+start+" in start!\n";
+					}
+				}
 			}
 		}
-	}
 
-	var constantsMap = {};
-
-	if(!errors){
-		for(var i in constants){
-			constantsMap[constants[i]] = true;
-		}
-	}
-
-	if(!errors){
-		if(!replacements[start]){
-			errors += "No rule defined for start variable "+start+"!\n";
-		}
-	}
-
-	if(errors){
-		alert(errors);
-	} else {
-		instructions = doReplacements(start, iterations);
-		draw(instructions);
+		return errors;
 	}
 
 	function doReplacements(ins, level){
+		let {iterations, start, rules, angle, distance, startX, startY, startAngle, replacements} = system;
+		
 		if(level == 0){
 			return ins;
 		} else {
 			var out = "";
 			for(var i in ins){
-				if(constants.indexOf(ins[i]) != -1){
-					out += ins[i];
-				} else {
+				if(ins[i].match(/[a-zA-Z]/)){
 					out += doReplacements(replacements[ins[i]], level-1);
+				} else {
+					out += ins[i];
 				}
 			}
 			return out;
 		}
 	}
 
-	function draw(ins){
+	function draw(){
+		let {iterations, start, rules, angle, distance, startX, startY, startAngle, replacements} = system;
+		ins = instructions;
+		
 		context.clearRect(0, 0, canvas.width, canvas.height);
 	
 		var turtle = new Turtle(canvas, context, [startX, startY], startAngle);
@@ -177,14 +372,8 @@ function lSystemsClick(){
 					turtle.pop();
 				break;
 				default:
-					if(replacements[ins[i]]){
-						if(ins[i].match(/^[A-Z]$/)){
-							turtle.move(distance);
-						}
-					} else if(constantsMap[ins[i]]){
-						if(ins[i].match(/^[A-Z]$/)){
-							turtle.move(distance);
-						}
+					if(ins[i].match(/[A-Z]/)){
+						turtle.move(distance);
 					}
 				break;
 			}
@@ -199,6 +388,15 @@ function lSystemsClick(){
 		context.stroke();
 		
 	}
+
+	function getSystem(){
+		return system;
+	}
+
+	return {
+		 init: init
+		,getSystem: getSystem
+	};
 }
 
 

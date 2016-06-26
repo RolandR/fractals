@@ -13,31 +13,47 @@ select{
 	border: 1px #AAAAAA outset;
 	color: #000000;
 	cursor: pointer;
-	padding: 3px;
+	padding: 3px 4px;
 	height: 23px;
 }
 
 button:hover,
-select:hover,
-.fileLabel:hover{
+select:hover{
 	background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.6), rgba(180, 180, 180, 0.5));
 	border: 1px rgba(0, 0, 0, 0.6) outset;
 }
 
 button:active,
-select:active,
-.fileLabel:active{
+select:active{
 	background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.6), rgba(180, 180, 180, 0.8));
 	border: 1px rgba(0, 0, 0, 0.8) outset;
 	outline: none;
 }
 
 button:focus,
-select:focus,
-.fileLabel:focus{
+select:focus{
 	outline: none;
 }
 
+button:disabled{
+	color: #666666;
+	border: 1px #EEEEEE outset;
+	background-image: linear-gradient(to bottom, rgba(180, 180, 180, 0.3), rgba(180, 180, 180, 0.3));
+}
+
+button:disabled:hover{
+	border: 1px #EEEEEE outset;
+	background-image: linear-gradient(to bottom, rgba(180, 180, 180, 0.3), rgba(180, 180, 180, 0.3));
+	cursor: default;
+}
+
+#controls *{
+	vertical-align: middle;
+}
+
+#controls label{
+	margin-right: 5px;
+}
 
 input[type="text"],
 input[type="number"],
@@ -45,12 +61,10 @@ textarea{
 	border: 1px #DDDDDD solid;
 	outline: none;
 	height: 23px;
-	margin: 0px 5px;
+	margin: 0px 5px 0px 0px;
 	padding: 2px;
 	font-family: "Courier New", monospace;
 	width: 50px;
-	position: relative;
-	top: -1px;
 }
 
 textarea{
