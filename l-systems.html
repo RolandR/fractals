@@ -124,11 +124,11 @@ B &gt; -A+B+A-</textarea></div></td>
 					</tr>
 					<tr>
 						<td><label for="angle">Angle:</label></td>
-						<td><div><input id="angle" type="number" value="60" /></div></td>
+						<td><div><input id="angle" type="number" value="60" step="any"/></div></td>
 					</tr>
 					<tr>
 						<td><label for="distance">Distance:</label></td>
-						<td><div><input id="distance" type="number" value="10" /></div></td>
+						<td><div><input id="distance" type="number" value="10" step="any"/></div></td>
 					</tr>
 					<tr>
 						<td colspan="2"><hr /></td>
@@ -136,27 +136,33 @@ B &gt; -A+B+A-</textarea></div></td>
 					<tr>
 						<td><label>Start pos:</label></td>
 						<td><div>
-							<input id="startX" type="number" value="0" /><!--
-						---><input id="startY" type="number" value="0" /><!--
-						---><button class="squareButton" id="findPos">&#8982;</button>
+							<input id="startX" type="number" step="any" /><!--
+						---><input id="startY" type="number" step="any" /><!--
+						---><button class="squareButton" id="findPos" title="Pick a position on screen">&#8982;</button>
 						</div></td>
 					</tr>
 					<tr>
 						<td><label for="startAngle">Start angle:</label></td>
 						<td><div>
-							<input id="startAngle" type="number" value="-90" /><!--
-						---><button class="squareButton" id="rotateLeft">&#8630;</button><!--
-						---><button class="squareButton" id="rotateRight">&#8631;</button>
+							<input id="startAngle" type="number" value="-90" step="any" /><!--
+						---><button class="squareButton" id="rotateLeft" title="Rotate left 90&deg;">&#8630;</button><!--
+						---><button class="squareButton" id="rotateRight" title="Rotate right 90&deg;">&#8631;</button>
 						</div></td>
 					</tr>
 					<tr>
 						<td><label for="iterations">Recursions:</label></td>
 						<td><div>
-							<input id="iterations" type="number" value="5" /><!--
-						---><button class="squareButton" id="lessIterations">-</button><!--
-						---><button class="squareButton" id="moreIterations">+</button>
+							<input id="iterations" type="number" value="5" step="1" min="0" /><!--
+						---><button class="squareButton" id="lessIterations" title="Decrease and apply">&#10134;</button><!--
+						---><button class="squareButton" id="moreIterations" title="Increase and apply">&#10133;</button>
 						</div></td>
 					</tr>
+					<!--tr>
+						<td><label for="timeLimit">Time limit (s):</label></td>
+						<td><div>
+							<input id="timeLimit" type="number" value="5" />
+						</div></td>
+					</tr-->
 					<tr>
 						<td colspan="2"><hr /></td>
 					</tr>

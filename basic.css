@@ -8,13 +8,14 @@ body{
 
 button,
 select{	
-	background: none;
+	background-color: #FFFFFF;
 	background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(180, 180, 180, 0.3));
 	border: 1px #AAAAAA outset;
 	color: #000000;
 	cursor: pointer;
 	padding: 3px 4px;
 	height: 23px;
+	line-height: 1em;
 }
 
 button:hover,

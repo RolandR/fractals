@@ -28,7 +28,7 @@ h1{
 	width: 290px;
 	max-height: 100%;
 
-	background-color: rgba(255, 255, 255, 0.5);
+	background-color: rgba(255, 255, 255, 0.8);
 }
 
 #controlPanel #content{
@@ -79,19 +79,19 @@ h1{
     height: 23px;
     width: 23px;
     line-height: 0px;
-    text-align: center;
+    text-align: justify-all;
     padding: 0px;
     margin: 0px 5px 0px 0px;
 }
 
 #rotateRight, #rotateLeft{
-	font-size: 22px;
+	font-size: 20px;
 	line-height: 1.2em;
-	padding-right: 1px;
 }
 
 #lessIterations, #moreIterations{
 	padding-bottom: 1px;
+	font-size: 18px;
 }
 
 #instructionsButtonContainer{

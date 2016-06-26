@@ -117,7 +117,7 @@ function LSystem(){
 
 		readSettings();
 		
-		let {iterations, start, rules, angle, distance, startX, startY, startAngle, replacements} = system;
+		var {iterations, start, rules, angle, distance, startX, startY, startAngle, replacements} = system;
 
 		var errors = checkSyntax(system);
 
@@ -130,7 +130,7 @@ function LSystem(){
 	}
 
 	function writeSettings(){
-		let {iterations, start, rules, angle, distance, startX, startY, startAngle, replacements} = system;
+		var {iterations, start, rules, angle, distance, startX, startY, startAngle, replacements} = system;
 
 		iterations = ~~iterations;
 		if(iterations < 0){
@@ -178,7 +178,7 @@ function LSystem(){
 
 	function checkSyntax(system){
 		system.replacements = {};
-		let {iterations, start, rules, angle, distance, startX, startY, startAngle, replacements} = system;
+		var {iterations, start, rules, angle, distance, startX, startY, startAngle, replacements} = system;
 		
 		var errors = "";
 		
@@ -231,7 +231,7 @@ function LSystem(){
 	}
 
 	function doReplacements(ins, level){
-		let {iterations, start, rules, angle, distance, startX, startY, startAngle, replacements} = system;
+		var {iterations, start, rules, angle, distance, startX, startY, startAngle, replacements} = system;
 		
 		if(level == 0){
 			return ins;
@@ -249,7 +249,7 @@ function LSystem(){
 	}
 
 	function draw(){
-		let {iterations, start, rules, angle, distance, startX, startY, startAngle, replacements} = system;
+		var {iterations, start, rules, angle, distance, startX, startY, startAngle, replacements} = system;
 		ins = instructions;
 		
 		context.clearRect(0, 0, canvas.width, canvas.height);
@@ -353,21 +353,21 @@ function LSystem(){
 	}
 
 	document.getElementById("rotateLeft").onclick = function(){
-		let angle = document.getElementById("startAngle").value * 1;
+		var angle = document.getElementById("startAngle").value * 1;
 		angle = (angle - 90) % 360;
 		document.getElementById("startAngle").value = angle;
 		init();
 	}
 
 	document.getElementById("rotateRight").onclick = function(){
-		let angle = document.getElementById("startAngle").value * 1;
+		var angle = document.getElementById("startAngle").value * 1;
 		angle = (angle + 90) % 360;
 		document.getElementById("startAngle").value = angle;
 		init();
 	}
 
 	document.getElementById("lessIterations").onclick = function(){
-		let iterations = ~~document.getElementById("iterations").value;
+		var iterations = ~~document.getElementById("iterations").value;
 		
 		iterations--;
 		
@@ -385,7 +385,7 @@ function LSystem(){
 	document.getElementById("moreIterations").onclick = function(){
 		document.getElementById("lessIterations").disabled = false;
 		
-		let iterations = ~~document.getElementById("iterations").value;
+		var iterations = ~~document.getElementById("iterations").value;
 		iterations++;
 		document.getElementById("iterations").value = iterations;
 		init();
@@ -411,9 +411,10 @@ function LSystem(){
 				,Math.round(1000*system.startY / canvas.height)/1000
 				,system.startAngle
 			];
-			var jsonString = JSON.stringify(toEncode);
-			document.getElementById("exportArea").innerHTML = jsonString;
+			var prettyJsonString = JSON.stringify(toEncode, null, 2);
+			document.getElementById("exportArea").innerHTML = prettyJsonString;
 
+			var jsonString = JSON.stringify(toEncode);
 			var base64String = btoa(jsonString);
 			document.getElementById("exportURL").value = window.location.origin + window.location.pathname + "?" + base64String;
 			
