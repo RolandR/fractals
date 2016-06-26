@@ -67,6 +67,10 @@ A > A-A+B+B-A
 B > A+A-B-B+B
 90
 
+--
+
+http://draemm.li/various/fractals/l-systems.html?WzIsIkErQStBK0ErQStBIiwiQSA+IEEuQStBIiw2MCwxLDgsMC41MzksMC43ODksLTkwXQ==
+
 */
 var popup = null;
 function closePopup(){
@@ -258,7 +262,8 @@ function LSystem(){
 					} 
 				}
 				
-				if(ins[i].match(/[a-zA-Z]/)){
+				//if(ins[i].match(/[a-zA-Z]/)){
+				if(replacements[ins[i]]){
 					out += replacements[ins[i]];
 				} else {
 					out += ins[i];
@@ -291,6 +296,8 @@ function LSystem(){
 		// Turns out this doesn't speed up drawing at all
 
 		//document.body.className = document.body.className.replace("wait ", '');
+
+		console.log(ins);
 		
 		return ins;
 		
