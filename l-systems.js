@@ -268,7 +268,6 @@ function LSystem(){
 			if(Date.now() - startTime > timeLimit){
 				document.getElementById("timeLimitLabel").className += "alert ";
 				setTimeout(function(){
-					console.log(document.getElementById("timeLimitLabel").className);
 					document.getElementById("timeLimitLabel").className = document.getElementById("timeLimitLabel").className.replace("alert ", '');
 				}, 100);
 				console.log("Replacing reached time limit after "+(Date.now() - startTime)+"ms.");
@@ -288,10 +287,45 @@ function LSystem(){
 
 		document.getElementById("replacementInfo").innerHTML += "<p>"+a+" of "+iterations+" replacement iterations, "+(Date.now() - startTime)+"ms</p>";
 
+		//ins = optimiseTurns(ins);
+		// Turns out this doesn't speed up drawing at all
+
 		//document.body.className = document.body.className.replace("wait ", '');
 		
 		return ins;
 		
+	}
+
+	function optimiseTurns(ins){
+
+		var startTime = Date.now();
+		
+		var out = "";
+		var sum = 0;
+		
+		for(i = 0; i < ins.length; i++){
+			if(ins[i] == "+"){
+				sum++;
+			} else if(ins[i] == "-"){
+				sum--;
+			} else {
+				if(sum > 0){
+					while(sum--){
+						out += "+";
+					}
+				} else if(sum < 0){
+					while(sum++){
+						out += "-";
+					}
+				}
+				sum = 0;
+				out += ins[i];
+			}
+		}
+
+		console.log("Reduced instruction length to "+Math.round(10000*out.length/ins.length)/100+"% in "+(Date.now() - startTime)+"ms.");
+
+		return out;
 	}
 
 	function draw(){
@@ -319,7 +353,6 @@ function LSystem(){
 				if(Date.now() - startTime > timeLimit){
 					document.getElementById("timeLimitLabel").className += "alert ";
 					setTimeout(function(){
-						console.log(document.getElementById("timeLimitLabel").className);
 						document.getElementById("timeLimitLabel").className = document.getElementById("timeLimitLabel").className.replace("alert ", '');
 					}, 100);
 					console.log("Drawing reached time limit after "+(Date.now() - startTime)+"ms.");
@@ -335,6 +368,9 @@ function LSystem(){
 				case "-":
 					turtle.turn(-angle);
 				break;
+				case ".":
+					turtle.invert();
+				break;
 				case "[":
 					turtle.push();
 				break;
@@ -342,9 +378,11 @@ function LSystem(){
 					turtle.pop();
 				break;
 				default:
-					if(ins[i].match(/[A-Z]/)){
+					if(ins[i].match(/[A-L]/)){
 						turtle.move(distance);
 						moveCount++;
+					} else if(ins[i].match(/[M-Z]/)){
+						turtle.jump(distance);
 					}
 				break;
 			}
@@ -513,6 +551,9 @@ function LSystem(){
 		popup = document.getElementById("importPopup");
 		document.getElementById("overlay").style.display = "flex";
 		popup.style.display = "flex";
+
+		document.getElementById("importArea").focus();
+		document.getElementById("importArea").select();
 	}
 	
 	document.getElementById("importButton").onclick = function(){
@@ -544,8 +585,6 @@ function LSystem(){
 
 		if(instructions){
 			draw();
-		} else {
-			console.log("foo");
 		}
 	}
 

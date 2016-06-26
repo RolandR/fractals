@@ -1,24 +1,41 @@
 function Turtle(canvas, context, startPos, startAngle){
 
+	const rad = (180/Math.PI);
+	const sin = Math.sin;
+	const cos = Math.cos;
+
 	var x = startPos[0];
 	var y = startPos[1];
 
 	var stack = [];
 	
-	var angle = startAngle / (180/Math.PI);
+	var angle = startAngle / rad;
+
+	var sign = 1;
 	
 	context.beginPath();
 	context.moveTo(x, y);
 
 	function move(distance){
-		x += Math.sin(angle) * distance;
-		y -= Math.cos(angle) * distance;
+		x += sin(angle) * distance;
+		y -= cos(angle) * distance;
 		
 		context.lineTo(x, y);
 	}
 
+	function jump(distance){
+		x += sin(angle) * distance;
+		y -= cos(angle) * distance;
+		
+		context.moveTo(x, y);
+	}
+
 	function turn(a){
-		angle += a / (180/Math.PI);
+		angle += sign * a / rad;
+	}
+
+	function invert(){
+		sign = 0 - sign;
 	}
 
 	function push(){
@@ -35,7 +52,9 @@ function Turtle(canvas, context, startPos, startAngle){
 	
 	return {
 		 move: move
+		,jump: jump
 		,turn: turn
+		,invert: invert
 		,push: push
 		,pop: pop
 	};
