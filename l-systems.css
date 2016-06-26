@@ -12,6 +12,10 @@ body, html{
 	overflow: hidden;
 }
 
+body.wait *{
+	cursor: wait; !important
+}
+
 h1{
 	font-weight: normal;
 	font-size: 24px;
@@ -36,6 +40,15 @@ h1{
 	overflow-y: auto;
 	margin: 0px -10px 3px -10px;
 	padding: 0px 10px;
+}
+
+#controlPanel>:last-child button{
+	width: 70px;
+}
+
+#controlPanel>:last-child>:last-child{
+	float: right;
+	background-color: #CCFFCC;
 }
 
 #controlsTable{
@@ -92,6 +105,23 @@ h1{
 #lessIterations, #moreIterations{
 	padding-bottom: 1px;
 	font-size: 18px;
+}
+
+#timeLimitLabel{
+	box-shadow: 0px 0px 10px #FF9999;
+	outline: 10px solid;
+	outline-color: rgba(255, 0, 0, 0.0);
+	background-color: rgba(255, 0, 0, 0.0);
+	border: 0px #FF0000 solid;
+	border-radius: 10px;
+	transition: outline-color, background-color;
+	transition-timing-function: linear;
+	transition-duration: 350ms;
+}
+
+#timeLimitLabel.alert{
+	outline-color: rgba(255, 0, 0, 0.5);
+	background-color: rgba(255, 0, 0, 0.5);
 }
 
 #instructionsButtonContainer{

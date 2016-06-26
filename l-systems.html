@@ -157,12 +157,12 @@ B &gt; -A+B+A-</textarea></div></td>
 						---><button class="squareButton" id="moreIterations" title="Increase and apply">&#10133;</button>
 						</div></td>
 					</tr>
-					<!--tr>
+					<tr id="timeLimitLabel">
 						<td><label for="timeLimit">Time limit (s):</label></td>
 						<td><div>
-							<input id="timeLimit" type="number" value="5" />
+							<input id="timeLimit" type="number" value="1" step="any" min="0"/>
 						</div></td>
-					</tr-->
+					</tr>
 					<tr>
 						<td colspan="2"><hr /></td>
 					</tr>
@@ -171,7 +171,7 @@ B &gt; -A+B+A-</textarea></div></td>
 			<div>
 				<button id="export">Export</button>
 				<button id="import">Import</button>
-				<button onclick="lSystem.init()" style="float: right;">Run!</button>
+				<button onclick="lSystem.init()">Run!</button>
 			</div>
 		</div>
 		

@@ -117,20 +117,20 @@ function LSystem(){
 
 		readSettings();
 		
-		var {iterations, start, rules, angle, distance, startX, startY, startAngle, replacements} = system;
+		var {iterations, start, rules, angle, distance, startX, startY, startAngle, replacements, timeLimit} = system;
 
 		var errors = checkSyntax(system);
 
 		if(errors){
 			alert(errors);
 		} else {
-			instructions = doReplacements(start, iterations);
+			instructions = doReplacements();
 			draw();
 		}
 	}
 
 	function writeSettings(){
-		var {iterations, start, rules, angle, distance, startX, startY, startAngle, replacements} = system;
+		var {iterations, start, rules, angle, distance, startX, startY, startAngle, replacements, timeLimit} = system;
 
 		iterations = ~~iterations;
 		if(iterations < 0){
@@ -172,13 +172,14 @@ function LSystem(){
 		system.startX = document.getElementById("startX").value * 1;
 		system.startY = document.getElementById("startY").value * 1;
 		system.startAngle = document.getElementById("startAngle").value * 1;
+		
+		system.timeLimit = document.getElementById("timeLimit").value * 1000;
 		system.replacements = {};
 
 	}
 
 	function checkSyntax(system){
-		system.replacements = {};
-		var {iterations, start, rules, angle, distance, startX, startY, startAngle, replacements} = system;
+		var {iterations, start, rules, angle, distance, startX, startY, startAngle, replacements, timeLimit} = system;
 		
 		var errors = "";
 		
@@ -230,26 +231,70 @@ function LSystem(){
 		return errors;
 	}
 
-	function doReplacements(ins, level){
-		var {iterations, start, rules, angle, distance, startX, startY, startAngle, replacements} = system;
+	function doReplacements(){		
+		var {iterations, start, rules, angle, distance, startX, startY, startAngle, replacements, timeLimit} = system;
+
+		//document.body.className += "wait ";
 		
-		if(level == 0){
-			return ins;
-		} else {
-			var out = "";
-			for(var i in ins){
+		var startTime = Date.now();
+
+		var ins = start;
+		var out = "";
+
+
+		var i = 0;
+		var len = 0;
+		var a = 0;
+		
+		for(a = 0; a < iterations; a++){
+			len = ins.length;
+			for(i = 0; i < len; i++){
+				
+				if(i%500000 == 0){
+					if(Date.now() - startTime > timeLimit){
+						break;
+					} 
+				}
+				
 				if(ins[i].match(/[a-zA-Z]/)){
-					out += doReplacements(replacements[ins[i]], level-1);
+					out += replacements[ins[i]];
 				} else {
 					out += ins[i];
 				}
 			}
-			return out;
+
+			if(Date.now() - startTime > timeLimit){
+				document.getElementById("timeLimitLabel").className += " alert";
+				setTimeout(function(){
+					document.getElementById("timeLimitLabel").className = "";
+				}, 100);
+				console.log("Replacing reached time limit at "+(Date.now() - startTime)+"ms.");
+				if(ins.length < out.length){
+					ins = out;
+				}
+				a++;
+				break;
+			} 
+			
+			ins = out;
+			out = "";
 		}
+
+		console.log("Replaced to "+a+" of "+iterations+" iterations in "+(Date.now() - startTime)+"ms, where "+i+" of "+len+" ("+Math.round(10000*i/len)/100+"%) replacements were done.");
+
+		//document.body.className = document.body.className.replace("wait ", '');
+		
+		return ins;
+		
 	}
 
 	function draw(){
-		var {iterations, start, rules, angle, distance, startX, startY, startAngle, replacements} = system;
+
+		//document.body.className += "wait ";
+
+		var startTime = Date.now();
+		
+		var {iterations, start, rules, angle, distance, startX, startY, startAngle, replacements, timeLimit} = system;
 		ins = instructions;
 		
 		context.clearRect(0, 0, canvas.width, canvas.height);
@@ -258,7 +303,19 @@ function LSystem(){
 
 		var stack = [];
 
-		for(var i in ins){
+		for(var i = 0; i < ins.length; i++){
+			
+			if(i%500000 == 0){
+				if(Date.now() - startTime > timeLimit){
+					document.getElementById("timeLimitLabel").className += " alert";
+					setTimeout(function(){
+						document.getElementById("timeLimitLabel").className = "";
+					}, 100);
+					console.log("Drawing reached time limit at "+(Date.now() - startTime)+"ms.");
+					break;
+				} 
+			}
+			
 			switch(ins[i]){
 				case "+":
 					turtle.turn(angle);
@@ -287,6 +344,10 @@ function LSystem(){
 		context.fillStyle = "#FFFFEE";
 		context.fill();*/
 		context.stroke();
+
+		console.log("Finished drawing "+(i)+" of "+ins.length+" instructions ("+Math.round(10000*i/ins.length)/100+"%) in "+(Date.now() - startTime)+"ms.");
+
+		//document.body.className = document.body.className.replace("wait ", '');
 		
 	}
 
@@ -319,6 +380,9 @@ function LSystem(){
 
 				system.startX = Math.round(system.startX * canvas.width)+0.5;
 				system.startY = Math.round(system.startY * canvas.height)+0.5;
+
+				system.timeLimit = document.getElementById("timeLimit").value * 1000;
+				system.replacements = {};
 				
 				writeSettings();
 				
@@ -327,7 +391,7 @@ function LSystem(){
 				if(errors){
 					alert("The imported system has errors:\n\n"+errors);
 				} else {
-					instructions = doReplacements(system.start, system.iterations);
+					instructions = doReplacements();
 					draw();
 				}
 			} else {
