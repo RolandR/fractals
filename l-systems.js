@@ -264,9 +264,10 @@ function LSystem(){
 			}
 
 			if(Date.now() - startTime > timeLimit){
-				document.getElementById("timeLimitLabel").className += " alert";
+				document.getElementById("timeLimitLabel").className += "alert ";
 				setTimeout(function(){
-					document.getElementById("timeLimitLabel").className = "";
+					console.log(document.getElementById("timeLimitLabel").className);
+					document.getElementById("timeLimitLabel").className = document.getElementById("timeLimitLabel").className.replace("alert ", '');
 				}, 100);
 				console.log("Replacing reached time limit at "+(Date.now() - startTime)+"ms.");
 				if(ins.length < out.length){
@@ -307,9 +308,10 @@ function LSystem(){
 			
 			if(i%500000 == 0){
 				if(Date.now() - startTime > timeLimit){
-					document.getElementById("timeLimitLabel").className += " alert";
+					document.getElementById("timeLimitLabel").className += "alert ";
 					setTimeout(function(){
-						document.getElementById("timeLimitLabel").className = "";
+						console.log(document.getElementById("timeLimitLabel").className);
+						document.getElementById("timeLimitLabel").className = document.getElementById("timeLimitLabel").className.replace("alert ", '');
 					}, 100);
 					console.log("Drawing reached time limit at "+(Date.now() - startTime)+"ms.");
 					break;
@@ -405,8 +407,8 @@ function LSystem(){
 		canvas.style.cursor = "crosshair";
 		canvas.onclick = function(e){
 
-			document.getElementById("startX").value = e.offsetX + 0.5;
-			document.getElementById("startY").value = e.offsetY + 0.5;
+			document.getElementById("startX").value = e.layerX + 0.5;
+			document.getElementById("startY").value = e.layerY + 0.5;
 
 			document.getElementById("findPos").disabled = false;
 			canvas.style.cursor = "default";

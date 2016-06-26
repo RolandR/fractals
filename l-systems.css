@@ -24,15 +24,16 @@ h1{
 
 #controlPanel{
 	border: 1px #555555 solid;
-	border-width: 0px 1px 1px 0px;
 	padding: 10px;
+	margin: 10px;
 	display: flex;
 	flex-direction: column;
 	position: absolute;
 	width: 290px;
-	max-height: 100%;
+	max-height: calc(100% - 20px);
 
 	background-color: rgba(255, 255, 255, 0.8);
+	box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3)
 }
 
 #controlPanel #content{
@@ -108,20 +109,20 @@ h1{
 }
 
 #timeLimitLabel{
-	box-shadow: 0px 0px 10px #FF9999;
 	outline: 10px solid;
 	outline-color: rgba(255, 0, 0, 0.0);
 	background-color: rgba(255, 0, 0, 0.0);
 	border: 0px #FF0000 solid;
 	border-radius: 10px;
 	transition: outline-color, background-color;
-	transition-timing-function: linear;
-	transition-duration: 350ms;
+	transition-timing-function: ease-out;
+	transition-duration: 450ms;
 }
 
 #timeLimitLabel.alert{
 	outline-color: rgba(255, 0, 0, 0.5);
 	background-color: rgba(255, 0, 0, 0.5);
+	transition-duration: 0ms;
 }
 
 #instructionsButtonContainer{
