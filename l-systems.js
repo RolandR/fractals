@@ -296,8 +296,6 @@ function LSystem(){
 		// Turns out this doesn't speed up drawing at all
 
 		//document.body.className = document.body.className.replace("wait ", '');
-
-		console.log(ins);
 		
 		return ins;
 		
@@ -395,12 +393,11 @@ function LSystem(){
 			}
 		}
 
-		/*context.lineTo(canvas.width, canvas.height);
-		context.lineTo(0, canvas.height);
-		context.closePath();
-				
+		/*
 		context.fillStyle = "#FFFFEE";
-		context.fill();*/
+		context.fill();
+		*/
+		
 		context.stroke();
 
 		console.log("Finished drawing "+(i)+" of "+ins.length+" instructions ("+Math.round(10000*i/ins.length)/100+"%) in "+(Date.now() - startTime)+"ms.");
@@ -465,6 +462,10 @@ function LSystem(){
 		canvas.style.cursor = "crosshair";
 		document.getElementById("infoPanel").style.top = "-"+(document.getElementById("infoPanel").offsetHeight+20)+"px";
 		
+		document.getElementById("positionMarker").style.top = ~~system.startY+"px";
+		document.getElementById("positionMarker").style.left = ~~system.startX+"px";
+		document.getElementById("positionMarker").style.display = "block";
+		
 		canvas.onclick = function(e){
 
 			document.getElementById("startX").value = e.layerX + 0.5;
@@ -473,6 +474,7 @@ function LSystem(){
 			document.getElementById("findPos").disabled = false;
 			canvas.style.cursor = "default";
 			document.getElementById("infoPanel").style.top = "0px";
+			document.getElementById("positionMarker").style.display = "none";
 			canvas.onclick = function(){};
 
 			init();

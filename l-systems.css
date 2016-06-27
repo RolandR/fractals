@@ -131,7 +131,7 @@ h1{
 	right: 0px;
 	top: 0px;
 	max-width: calc(100% - 310px);
-	background-color: rgba(0, 0, 0, 0.01);
+	background-color: rgba(128, 128, 128, 0.01);
 	border: 1px rgba(0, 0, 0, 0.03) solid;
 	color: rgba(0, 0, 0, 0.4);
 	padding: 10px;
@@ -146,7 +146,7 @@ h1{
 }
 
 #infoPanel:hover{
-	background-color: rgba(0, 0, 0, 0.1);
+	background-color: rgba(240, 240, 240, 0.8);
 	border: 1px rgba(0, 0, 0, 0.2) solid;
 	color: rgba(0, 0, 0, 0.9)
 }
@@ -263,3 +263,23 @@ h1{
 	flex: auto;
 	margin: 0px 0px 0px 5px;
 }
+
+#positionMarker{
+	display: none;
+	position: absolute;
+	top: 100px;
+	left: 400px;
+	width: 12px;
+	height: 12px;
+	background-color: #FF0000;
+	border-radius: 20px;
+	transform: translate(-50%, -50%);
+}
+
+
+
+
+
+
+
+
