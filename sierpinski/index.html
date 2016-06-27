@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title>
-			Flowsnake (Gosper Curve)
+			Sierpinski Arrowhead
 		</title>
 		<style>
 			*{
@@ -26,11 +26,11 @@
 				position: absolute;
 			}
 		</style>
-		<link href="./basic.css" rel="stylesheet" type="text/css" media="all">
+		<link href="../basic.css" rel="stylesheet" type="text/css" media="all">
 	</head>
 	<body>
 		<div id="controls">
-			<label for="iterations">Depth:</label><input id="iterations" type="number" value="3" /><button onclick="flowsnakeClick()">Run!</button>
+			<label for="iterations">Recursions:</label><input id="iterations" type="number" value="7" /><button onclick="sierpinskiArrowClick()">Run!</button>
 		</div>
 		<div id="canvasContainer">
 			<canvas id="renderCanvas">
@@ -38,6 +38,6 @@
 			</canvas>
 		</div>
 	</body>
-	<script type="text/javascript" src="./Turtle.js"></script>
-	<script type="text/javascript" src="./flowsnake.js"></script>
+	<script type="text/javascript" src="../Turtle.js"></script>
+	<script type="text/javascript" src="./sierpinski-arrow.js"></script>
 </html>

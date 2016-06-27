@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title>
-			Sierpinski Arrowhead
+			Dragon Curve
 		</title>
 		<style>
 			*{
@@ -17,6 +17,7 @@
 			}
 			#canvasContainer{
 				text-align: center;
+				margin-top: 20px;
 			}
 			#controls{
 				border: 1px #555555 solid;
@@ -25,12 +26,13 @@
 				display: inline-block;
 				position: absolute;
 			}
+			/*canvas{border: 1px #00FF00 solid;}*/
 		</style>
-		<link href="./basic.css" rel="stylesheet" type="text/css" media="all">
+		<link href="../basic.css" rel="stylesheet" type="text/css" media="all">
 	</head>
 	<body>
 		<div id="controls">
-			<label for="iterations">Depth:</label><input id="iterations" type="number" value="7" /><button onclick="sierpinskiArrowClick()">Run!</button>
+			<label for="iterations">Recursions:</label><input id="iterations" type="number" value="16" /><button onclick="dragonClick()">Run!</button>
 		</div>
 		<div id="canvasContainer">
 			<canvas id="renderCanvas">
@@ -38,6 +40,6 @@
 			</canvas>
 		</div>
 	</body>
-	<script type="text/javascript" src="./Turtle.js"></script>
-	<script type="text/javascript" src="./sierpinski-arrow.js"></script>
+	<script type="text/javascript" src="../Turtle.js"></script>
+	<script type="text/javascript" src="./dragon.js"></script>
 </html>
