@@ -161,6 +161,45 @@ h1{
 	color: rgba(0, 0, 0, 0.9)
 }
 
+#author{
+	position: absolute;
+	right: 0px;
+	bottom: 0px;
+	color: rgba(0, 0, 0, 0.4);
+	border: 1px rgba(0, 0, 0, 0) solid;
+	padding: 10px;
+	margin: 10px 30px;
+	font-size: 17px;
+
+	transition: background-color color bottom;
+	transition-timing-function: ease-in-out;
+	transition-duration: 150ms;
+}
+
+#author a{
+	color: rgba(0, 0, 255, 0.4);
+	text-decoration: none;
+
+	transition: color;
+	transition-timing-function: ease-in-out;
+	transition-duration: 100ms;
+}
+
+#author:hover{
+	background-color: rgba(250, 250, 250, 0.8);
+	border: 1px rgba(0, 0, 0, 0.2) solid;
+	color: rgba(0, 0, 0, 0.9)
+}
+
+#author:hover a{
+	color: rgba(0, 0, 255, 0.8);
+}
+
+#author a:hover{
+	text-decoration: underline;
+}
+
+
 #overlay{
 	display: none;
 	position: absolute;

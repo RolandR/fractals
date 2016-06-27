@@ -497,6 +497,7 @@ function LSystem(){
 		document.getElementById("findPos").disabled = true;
 		canvas.style.cursor = "crosshair";
 		document.getElementById("infoPanel").style.top = "-"+(document.getElementById("infoPanel").offsetHeight+20)+"px";
+		document.getElementById("author").style.bottom = "-"+(document.getElementById("author").offsetHeight+10)+"px";
 		
 		document.getElementById("positionMarker").style.top = ~~system.startY+"px";
 		document.getElementById("positionMarker").style.left = ~~system.startX+"px";
@@ -510,6 +511,7 @@ function LSystem(){
 			document.getElementById("findPos").disabled = false;
 			canvas.style.cursor = "default";
 			document.getElementById("infoPanel").style.top = "0px";
+			document.getElementById("author").style.bottom = "0px";
 			document.getElementById("positionMarker").style.display = "none";
 			canvas.onclick = function(){};
 
