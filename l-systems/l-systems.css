@@ -25,6 +25,7 @@ h1{
 #controlPanel{
 	position: absolute;
 	border: 1px #555555 solid;
+	max-height: calc(100% - 20px);
 	padding: 10px;
 	margin: 10px;
 	display: flex;
@@ -126,6 +127,15 @@ h1{
 	margin-top: 7px;
 }
 
+#instructionsButtonContainer > button{
+	width: 90px;
+	margin-right: 10px;
+}
+
+#instructionsButtonContainer > button:last-child{
+	margin-right: 0px;
+}
+
 #infoPanel{
 	position: absolute;
 	right: 0px;
@@ -160,6 +170,7 @@ h1{
 	left: 0px;
 	background-color: rgba(0, 0, 0, 0.3);
 	z-index: 100000;
+	padding: 20px;
 	justify-content: center;
 	align-items: center;
 }
@@ -216,7 +227,7 @@ h1{
 	width: 100px;
 }
 
-.popup :last-child{
+.popup > :last-child{
 	align-self: flex-end;
 	flex: none;
 }
@@ -251,6 +262,34 @@ h1{
 	padding: 4px;
 	border: 1px #DDDDDD solid;
 	border-width: 1px 0px;
+}
+
+#examplesPopup{
+	width: 600px;
+}
+
+#examplesPopup .exampleImg{
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0);
+	border: 1px #000000 solid;
+	margin: 10px;
+	cursor: pointer;
+	box-sizing: content-box;
+
+	transition: box-shadow;
+	transition-timing-function: ease-in-out;
+	transition-duration: 100ms;
+}
+
+#examplesPopup .exampleImg:hover{
+	box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);
+}
+
+#examplesContainer{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-content: stretch;
 }
 
 #exportURLContainer{

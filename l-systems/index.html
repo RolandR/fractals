@@ -35,6 +35,16 @@
 					<button class="popupButton" id="importButton">Import</button>
 				</div>
 			</div>
+
+			<div class="popup" id="examplesPopup">
+				<h2>Examples</h2><button class="closeButton" onclick="closePopup()">&#10005;</button>
+				<div class="popupContent" id="examplesContainer">
+					
+				</div>
+				<div>
+					<button class="popupButton" onclick="closePopup()">Cancel</button>
+				</div>
+			</div>
 			
 			<div class="popup" id="instructionsPopup">
 				<h2>L-Systems</h2><button class="closeButton" onclick="closePopup()">&#10005;</button>
@@ -116,7 +126,7 @@
 					Below, you can define the rules of a <a href="https://en.wikipedia.org/wiki/L-system">Lindenmayer System</a>, or L-System.
 				</p>
 				<div id="instructionsButtonContainer">
-					<button id="instructionsButton">Instructions</button>
+					<button id="instructionsButton">Instructions</button><button id="examplesButton">Examples</button>
 				</div>
 				<table id="controlsTable">
 					<tr>

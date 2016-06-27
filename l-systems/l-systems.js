@@ -83,6 +83,42 @@ function closePopup(){
 
 var lSystem = new LSystem();
 
+loadExamples();
+function loadExamples(){
+	var imagePath = "./thumbnails/";
+	var container = document.getElementById("examplesContainer");
+	var examples = [
+		 '[2,"A","A > +A+A-A",90,2,10,0.409,0.375,-90]'
+		,'[2,"A+A+A+A+A+A","A > A.A+A",60,1,8,0.477,0.705,-90]'
+		,'[2,"A","A > B-C-B-C-\\nB > B+B-\\nC > B",90,2,13,0.477,0.313,-90]'
+		,'[2,"B-B-B-B-","B > B-B+B",90,2,6,0.333,0.431,-90]'
+		,'[2,"B-B-B-","B > B-B+B",120,1,9,0.52,0.367,-90]'
+		,'[2,"A+A+A+A+","A > A+A-A-A+A",90,3,4,0.401,0.362,-90]'
+		,'[2,"A+A+A+A+A+A+","A > A+A-A-A+A",60,2,3,0.382,0.359,-90]'
+		,'[2,"A","A > -.ABB.+ABA+.BBA.-",90,1,7,0.549,0.112,270]'
+	];
+
+	for(var i in examples){
+		
+		var e = document.createElement("img");
+		e.src = imagePath + i + ".png";
+		e.width = 250;
+		e.height = 250;
+		e.dataset.exampleId = i;
+		e.className = "exampleImg";
+		{
+			e.onclick = function(ev){
+				closePopup();
+				var jsonString = examples[ev.target.dataset.exampleId];
+				lSystem.importFromJSON(jsonString);
+			};
+		}
+		container.appendChild(e);
+		
+		
+	}
+}
+
 
 function LSystem(){
 
@@ -402,7 +438,7 @@ function LSystem(){
 
 		console.log("Finished drawing "+(i)+" of "+ins.length+" instructions ("+Math.round(10000*i/ins.length)/100+"%) in "+(Date.now() - startTime)+"ms.");
 		document.getElementById("drawingInfo").innerHTML += "<p>"+i+" of "+ins.length+" instructions ("+Math.round(10000*i/ins.length)/100+"%) drawn, "+(Date.now() - startTime)+"ms</p>"
-		document.getElementById("drawingInfo").innerHTML += "<p>Total length drawn is "+Math.round(100*moveCount*distance)/100+"</p>"
+		document.getElementById("drawingInfo").innerHTML += "<p>Total length drawn is "+Math.round(100*moveCount*distance)/100+"px</p>"
 
 		//document.body.className = document.body.className.replace("wait ", '');
 		
@@ -576,6 +612,12 @@ function LSystem(){
 		popup.style.display = "flex";
 	}
 
+	document.getElementById("examplesButton").onclick = function(){
+		popup = document.getElementById("examplesPopup");
+		document.getElementById("overlay").style.display = "flex";
+		popup.style.display = "flex";
+	}
+
 	document.getElementById("overlay").onclick = function(e){
 		if(e.target == this){
 			closePopup();
@@ -599,6 +641,7 @@ function LSystem(){
 
 	return {
 		 init: init
+		,importFromJSON: importFromJSON
 	};
 }
 
