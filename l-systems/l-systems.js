@@ -2,74 +2,57 @@
 
 cool rules:
 
-A > B-C-B-C-
-B > B+B-
-C > B
+[
+  2,
+  "A",
+  "A > A-.A.-A",
+  60,
+  5,
+  7,
+  0.319,
+  0.656,
+  90
+]
 
-90°
 
----
+[
+  2,
+  "B",
+  "B > B+B---BB+++B-B",
+  60,
+  6,
+  7,
+  0.429,
+  0.744,
+  0
+]
 
-A > B-C-B-C-
-B > B-C+B
-C > C-B+C
+[
+  2,
+  ".A",
+  "A > A+A-A--.A.++A",
+  60,
+  5,
+  5,
+  0.146,
+  0.607,
+  90
+]
 
-90°
+[
+  2,
+  "A+.A--.A+.A",
+  "A > A+A-A--.A.++A",
+  60,
+  3,
+  5,
+  0.272,
+  0.218,
+  90
+]
 
----
 
-A > B-C-B-
-B > B-C+B
-C > C-B+C
 
-120°
-
----
-
-B > A+A+A+A+
-A > A+A-A-A+A
-start: B
-90°
-
----
-
-B > A+A+A+A+A+A+
-A > A+A-A-A+A
-start: B
-60°
-
---
-
-B > A+A+A+
-A > A+A-A-A+A
-start: B
-120°
-Sierpinski!
-
---
-
-A > A+A-+A
-120°
-
---
-
-A > A+AA-
-120°
-
---
-
-A > +A+A-A
-90*
-
---
-
-A > A-A+B+B-A
-B > A+A-B-B+B
-90
-
---
-
-http://draemm.li/various/fractals/l-systems.html?WzIsIkErQStBK0ErQStBIiwiQSA+IEEuQStBIiw2MCwxLDgsMC41MzksMC43ODksLTkwXQ==
 
 */
 var popup = null;
@@ -259,12 +242,26 @@ function LSystem(){
 		}
 
 		if(!errors){
+			if(Object.keys(replacements).length == 0){
+				errors += "There are no rules defined!\n";
+			}
+		}
+
+		if(!errors){
+			var startContainsVariable = false;
 			for(var i in start){
-				if(start[i].match(/^[a-zA-Z]$/)){
-					if(!replacements[start[i]]){
-						errors += "No rule defined for variable "+start+" in start!\n";
-					}
+				if(replacements[start[i]]){
+					startContainsVariable = true;
 				}
+			}
+			if(!startContainsVariable){
+				var haveRules = "";
+				for(var i in replacements){
+					if (i > 0){haveRules += ", "};
+					haveRules += i;
+				}
+				
+				errors += "Start contains no variables. There are rules defined for "+haveRules+", start is "+start+".\n";
 			}
 		}
 
