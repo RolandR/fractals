@@ -331,10 +331,8 @@ h1{
 	align-content: stretch;
 }
 
-#exportURLContainer{
-	display: flex;
-	align-items: center;
-	margin-bottom: 10px;
+#exportURL{
+	width: 100%;
 }
 
 #exportURLContainer :last-child{

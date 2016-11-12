@@ -115,7 +115,7 @@ function LSystem(){
 	canvas.height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
 	document.getElementById("startX").value = canvas.width/2;
-	document.getElementById("startY").value = Math.round(5*canvas.height/6);
+	document.getElementById("startY").value = Math.round(3*canvas.height/6);
 
 	var system = {};
 	var instructions = "";
@@ -587,8 +587,8 @@ function LSystem(){
 			document.getElementById("overlay").style.display = "flex";
 			popup.style.display = "flex";
 
-			document.getElementById("exportArea").focus();
-			document.getElementById("exportArea").select();
+			document.getElementById("exportURL").focus();
+			document.getElementById("exportURL").select();
 			
 		}
 	}

@@ -14,13 +14,13 @@
 			<div class="popup" id="exportPopup">
 				<h2>Export</h2><button class="closeButton" onclick="closePopup()">&#10005;</button>
 				<p>
-					Copy the text below to share your L-system with others or to save it for later.
+					<label for="exportURL">Share this link to show your L-system to others or to save it for later:</label>
+				</p>
+				<input type="text" id="exportURL" onclick="this.select()" readonly />
+				<p>
+					Or copy the text below:
 				</p>
 				<textarea class="popupContent" id="exportArea"></textarea>
-				<div id="exportURLContainer">
-					<label for="exportURL">Or share this link:</label>
-					<input type="text" id="exportURL" onclick="this.select()" readonly />
-				</div>
 				<button class="popupButton" onclick="closePopup()">Done</button>
 			</div>
 			
