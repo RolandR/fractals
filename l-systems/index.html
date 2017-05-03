@@ -1,14 +1,119 @@
 <!doctype html>
+
+<!--
+	========================================================================
+	L-Systems Sandbox
+	
+	An online sandbox for experimenting with Lindenmayer Systems.
+	
+	Copyright (C) 2016, 2017 Roland Rytz <roland@draemm.li>
+	
+	Licensed under the GNU Affero General Public License Version 3
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU Affero General Public License as
+	published by the Free Software Foundation, either version 3 of the
+	License, or (at your option) any later version.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+	For more information, see:
+	https://draemm.li/various/fractals/LICENSE
+	
+	========================================================================
+-->
+
 <html>
 	<head>
 		<meta charset="utf-8" />
 		<title>
-			Lindenmayer Systems
+			Lindenmayer Systems - An L-System Sandbox in your Browser.
 		</title>
+
+		<meta name="description" content="A sandbox for experimenting with L-Systems in your browser.">
+		<meta name="author" content="Roland Rytz">
+		<meta name="keywords" content="L-Systems, Lindenmayer Systems, Procedural Generation, JavaScript, Online, HTML5">
+		<meta name="application-name" content="L-Systems Sandbox">
+		<meta name="robots" content="index, follow">
+		
 		<link href="./l-systems.css" rel="stylesheet" type="text/css" media="all" />
 		<link href="../basic.css" rel="stylesheet" type="text/css" media="all" />
 	</head>
-	<body>
+	<body>			
+		<div id="controlPanel">
+			<h1>Lindenmayer Systems</h1>
+			<div id="content">
+				<p id="description">
+					This is a tool for experimenting with <a href="https://en.wikipedia.org/wiki/L-system">Lindenmayer Systems</a>, or L-Systems.
+				</p>
+				<div id="instructionsButtonContainer">
+					<button id="instructionsButton">Instructions</button><button id="examplesButton">Examples</button>
+				</div>
+				<table id="controlsTable">
+					<tr>
+						<td colspan="2"><hr /></td>
+					</tr>
+					<tr>
+						<td><label for="start">Start:</label></td>
+						<td><div><input id="start" type="text" value="A" /></div></td>
+					</tr>
+					<tr>
+						<td><label for="rules">Rules:</label></td>
+						<td><div><textarea id="rules" rows="5">A &gt; +B-A-B+
+B &gt; -A+B+A-</textarea></div></td>
+					</tr>
+					<tr>
+						<td><label for="angle">Angle:</label></td>
+						<td><div><input id="angle" type="number" value="60" step="any"/></div></td>
+					</tr>
+					<tr>
+						<td><label for="distance">Distance:</label></td>
+						<td><div><input id="distance" type="number" value="10" step="any"/></div></td>
+					</tr>
+					<tr>
+						<td colspan="2"><hr /></td>
+					</tr>
+					<tr>
+						<td><label>Start pos:</label></td>
+						<td><div>
+							<input id="startX" type="number" step="any" /><!--
+						---><input id="startY" type="number" step="any" /><!--
+						---><button class="squareButton" id="findPos" title="Pick a position on screen">&#8982;</button>
+						</div></td>
+					</tr>
+					<tr>
+						<td><label for="startAngle">Start angle:</label></td>
+						<td><div>
+							<input id="startAngle" type="number" value="-90" step="any" /><!--
+						---><button class="squareButton" id="rotateLeft" title="Rotate left 90&deg;">&#8630;</button><!--
+						---><button class="squareButton" id="rotateRight" title="Rotate right 90&deg;">&#8631;</button>
+						</div></td>
+					</tr>
+					<tr>
+						<td><label for="iterations">Recursions:</label></td>
+						<td><div>
+							<input id="iterations" type="number" value="5" step="1" min="0" /><!--
+						---><button class="squareButton" id="lessIterations" title="Decrease and apply">&#10134;</button><!--
+						---><button class="squareButton" id="moreIterations" title="Increase and apply">&#10133;</button>
+						</div></td>
+					</tr>
+					<tr id="timeLimitLabel">
+						<td><label for="timeLimit">Time limit (s):</label></td>
+						<td><div>
+							<input id="timeLimit" type="number" value="1" step="any" min="0"/>
+						</div></td>
+					</tr>
+					<tr>
+						<td colspan="2"><hr /></td>
+					</tr>
+				</table>
+			</div>
+			<div>
+				<button id="export">Export</button>
+				<button id="import">Import</button>
+				<button onclick="lSystem.init()">Run!</button>
+			</div>
+		</div>
+
 		<div id="overlay">
 			
 			<div class="popup" id="exportPopup">
@@ -117,81 +222,6 @@
 				</div>
 			</div>
 			
-		</div>
-			
-		<div id="controlPanel">
-			<h1>Lindenmayer Systems</h1>
-			<div id="content">
-				<p>
-					Below, you can define the rules of a <a href="https://en.wikipedia.org/wiki/L-system">Lindenmayer System</a>, or L-System.
-				</p>
-				<div id="instructionsButtonContainer">
-					<button id="instructionsButton">Instructions</button><button id="examplesButton">Examples</button>
-				</div>
-				<table id="controlsTable">
-					<tr>
-						<td colspan="2"><hr /></td>
-					</tr>
-					<tr>
-						<td><label for="start">Start:</label></td>
-						<td><div><input id="start" type="text" value="A" /></div></td>
-					</tr>
-					<tr>
-						<td><label for="rules">Rules:</label></td>
-						<td><div><textarea id="rules" rows="5">A &gt; +B-A-B+
-B &gt; -A+B+A-</textarea></div></td>
-					</tr>
-					<tr>
-						<td><label for="angle">Angle:</label></td>
-						<td><div><input id="angle" type="number" value="60" step="any"/></div></td>
-					</tr>
-					<tr>
-						<td><label for="distance">Distance:</label></td>
-						<td><div><input id="distance" type="number" value="10" step="any"/></div></td>
-					</tr>
-					<tr>
-						<td colspan="2"><hr /></td>
-					</tr>
-					<tr>
-						<td><label>Start pos:</label></td>
-						<td><div>
-							<input id="startX" type="number" step="any" /><!--
-						---><input id="startY" type="number" step="any" /><!--
-						---><button class="squareButton" id="findPos" title="Pick a position on screen">&#8982;</button>
-						</div></td>
-					</tr>
-					<tr>
-						<td><label for="startAngle">Start angle:</label></td>
-						<td><div>
-							<input id="startAngle" type="number" value="-90" step="any" /><!--
-						---><button class="squareButton" id="rotateLeft" title="Rotate left 90&deg;">&#8630;</button><!--
-						---><button class="squareButton" id="rotateRight" title="Rotate right 90&deg;">&#8631;</button>
-						</div></td>
-					</tr>
-					<tr>
-						<td><label for="iterations">Recursions:</label></td>
-						<td><div>
-							<input id="iterations" type="number" value="5" step="1" min="0" /><!--
-						---><button class="squareButton" id="lessIterations" title="Decrease and apply">&#10134;</button><!--
-						---><button class="squareButton" id="moreIterations" title="Increase and apply">&#10133;</button>
-						</div></td>
-					</tr>
-					<tr id="timeLimitLabel">
-						<td><label for="timeLimit">Time limit (s):</label></td>
-						<td><div>
-							<input id="timeLimit" type="number" value="1" step="any" min="0"/>
-						</div></td>
-					</tr>
-					<tr>
-						<td colspan="2"><hr /></td>
-					</tr>
-				</table>
-			</div>
-			<div>
-				<button id="export">Export</button>
-				<button id="import">Import</button>
-				<button onclick="lSystem.init()">Run!</button>
-			</div>
 		</div>
 
 		<div id="infoPanel">
